@@ -38,6 +38,19 @@ int main(int argc, char** argv){
             kernel(n,a,ind,b,c);
         }
 
+        float m = 0;
+
+        for (int i=0;i<calc;i++)
+        {
+            uint64_t start=get_cycles();
+            kernel(n,a,ind,b,c);
+            uint64_t end=get_cycles();
+    
+            m+=end -start;
+        }
+
+        m/=calc;
+        printf ("%f\n",m);
     }
 
     return 0;
