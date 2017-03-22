@@ -8,5 +8,6 @@
 #include <time.h>
 
 //PROTOTYPES
+void kernel(int n,float a[n],int ind[n],float b[n], float c[n][n]);
 
 #endif
