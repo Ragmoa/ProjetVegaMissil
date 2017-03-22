@@ -1,11 +1,8 @@
 #include "vegamissil.h"
 
-
-
-
 int main(int argc, char** argv){
 
-    if (argc!=3)
+    if (argc!=4)
     {
         fprintf(stderr,"Abandon:Mauvais nombre d'arguments\n");
         return -1;
@@ -15,12 +12,12 @@ int main(int argc, char** argv){
         //HERE STARTS THE FUN !!
         //
         //INIT
-        srand(time(NULL));
+        srand(666);
         int n=atoi(argv[2]);
         float *a=malloc(n*sizeof(float));
         int *ind=malloc(n*sizeof(int));
         float *b=malloc(n*sizeof(float));
-        float *c [n]=malloc (n*n*sizeof(float));
+        float (*c)[n]=malloc (n*n*sizeof(float));
         for (int i=0;i<n;i++)
         {
             a[i]=(float)((float)rand()/(float)RAND_MAX);
@@ -34,10 +31,15 @@ int main(int argc, char** argv){
         //INIT:DONE
         //
         //WARMUP
+        int warmup=atoi(argv[1]);
+        int calc=atoi(argv[2]);
+        for (int i=0;i<warmup;i++)
+        {
+            kernel(n,a,ind,b,c);
+        }
 
     }
 
+    return 0;
 }
-
-
 

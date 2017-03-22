@@ -1,3 +1,4 @@
+#include "vegamissil.h"
 
 void kernel (int n, float a[n],int ind[n] ,float b[n] ,float c[n][n]){
     int i,j;
