@@ -8,5 +8,5 @@ void kernel (int n, float a[n],int ind[n] ,float b[n] ,float c[n][n]){
         }
     
     }
-    fprintf(stderr,"%f\n",c[0][0]);
+    /* fprintf(stderr,"%f\n",c[0][0]);  Note : Useless et rend les performances inconsitentes */
 }
