@@ -19,7 +19,7 @@ k=$N
 echo "" > test
 
 while test $N -ne 0; do
-	T=$(./vegaMissil ${WARM} ${NB_RUN} ${TAILLE} 2> warmup.csv)
+	T=$(./vegaMissil ${WARM} ${NB_RUN} ${TAILLE})
 	echo $T >> test
 	z=$(bc <<< $z" + "$T)
 	N=$(($N-1))
