@@ -13,5 +13,14 @@ gottagofast :
 unsafe-math :
 	${CC} ${FLAGS} ${FILE} -funsafe-math-optimizations ${FILE_N}
 
+fast-math :	
+	${CC} ${FLAGS} ${FILE} -ffast-math ${FILE_N}
 
- 
+rename-register :	
+	${CC} ${FLAGS} ${FILE} -frename-registers ${FILE_N}
+
+weird-reduce-ADDR-calc :	
+	${CC} ${FLAGS} ${FILE} -fsection-anchors ${FILE_N}
+icc :
+	icc -w ${FILE} ${FILE_N}
+

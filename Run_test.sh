@@ -1,9 +1,9 @@
 #!/bin/sh
 
-N=100
-WARM=100
-NB_RUN=20
-TAILLE=100
+N=1
+WARM=20000
+NB_RUN=1
+TAILLE=85
 
 z='0.0' 
 
@@ -19,7 +19,7 @@ k=$N
 echo "" > test
 
 while test $N -ne 0; do
-	T=$(./vegaMissil ${WARM} ${NB_RUN} ${TAILLE} 2> /dev/null)
+	T=$(./vegaMissil ${WARM} ${NB_RUN} ${TAILLE} 2> warmup.csv)
 	echo $T >> test
 	z=$(bc <<< $z" + "$T)
 	N=$(($N-1))
