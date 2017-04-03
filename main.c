@@ -51,7 +51,7 @@ int main(int argc, char** argv){
  
 	int32_t *ind = malloc(n*sizeof(int32_t)); //On force en int_32 pour avoir la même taille qu'un float
 
-	uint64_t *buffWrm = malloc(warmup*sizeof(uint64_t));
+	int64_t *buffWrm = malloc(warmup*sizeof(int64_t));
 
 //INIT
 	srand(SEED);
@@ -76,6 +76,7 @@ int main(int argc, char** argv){
 	}
 
 // PERF RUN
+	m = 0.0;
 	for(i=0; i<calc ; i++){
 		start=get_cycles();
 		kernel(n,a,ind,b,c);
@@ -86,15 +87,16 @@ int main(int argc, char** argv){
 
 	if(calc!=0) m/=calc;
 
+
 //OUTPUT & CLEANING
 	
 	printf ("%lf\n", m);
 		
 	fwarmup = fopen("warmup.tsv", "w+");
-	if(fwarmup == NULL) fprintf(stderr, "Imposible d'ouvrir le fichier pour le stockage des donnée du warmup !\n");
+	if(fwarmup == NULL) fprintf(stderr, "Imposible d'ouvrir le fichier pour le stockage des données du warmup !\n");
 	else{
 		for(i=0 ; i<warmup ; i++){
-			fprintf(fwarmup, "%u\t%"PRIu64"\n", i, buffWrm[i]);
+			fprintf(fwarmup, "%u\t%"PRIi64"\n", i, buffWrm[i]);
 		}
 		fclose(fwarmup);
 	}

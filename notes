@@ -2,4 +2,24 @@ L1= 95% taille L1 ~30Ko ---> Taille 85|Taille totale 29,920 Ko |-> Warmup 10,5K
 
 L2= min 3x taille L1 max 90% taille L2 ~230Ko ---> Taille 238|--- |-> Warmup 
 L3= min 3x taille L2 max 50% taille L3 ~3Mo ---> Taille 865|
-RAM = 3x taille L3 ~18Mo ---> Taille 2120| 
+RAM = 3x taille L3 ~18Mo ---> Taille 2120|
+
+
+####Config Machine :
+
+- I7 3630QM (~Fin 2012) :
+	- 4 cores - 8 threads
+	- Freq : ~2.4Ghz (Idle 1.2Ghz - Turbo mode 3.40 Ghz )
+	-> lstopo
+- 6 Go de RAM
+
+#### Sytéme
+- gcc 6.3.1
+- Arch x86_64 ( noyaux Linux 4.10.6-1 Arch )
+
+####Premier test : Le warm up
+
+-> Full Cstate
+
+-> CState max : 0
+	
