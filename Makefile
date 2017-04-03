@@ -1,8 +1,11 @@
 CC=gcc
-FLAGS=-O3
+FLAGS=-O3 -Wall
 FILE=main.c kernel.c
 FILE_N=-o vegaMissil
 N=100
+
+back :
+	${CC} -Og -Wall ${FILE} ${FILE_N}
 
 ref :
 	${CC} ${FLAGS} ${FILE} ${FILE_N}
