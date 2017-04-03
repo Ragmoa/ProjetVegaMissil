@@ -50,15 +50,75 @@ Pour la RAM, nous prenons des tableaux de 2120 cases: coût total 18 003.04 Ko.
     RAM & 5 864Mo & 2120 & 18.00304 Mo \\
 \end{tabular}
 
+\subsection*{Carastéristiques de la machine}
+
+Hardware
+\begin{itemize}
+    \item{- I7 3630QM (~Fin 2012) :}
+    \item{- 4 cores - 8 threads}
+    \item{- Freq : ~2.4Ghz (Idle 1.2Ghz - Turbo mode 3.40 Ghz )}
+    \item{- 6 Go de RAM }
+\end{itemize}
+
+Système
+\begin{itemize}
+    \item{- gcc 6.3.1}
+    \item{- Arch x86\_64 ( noyaux Linux 4.10.6-1 Arch )}
+\end{itemize}
+
 \subsection*{Warmup}
+
+
 
 Pour determiner le nombre de cycles de warmup nécessaires: On lance plusieurs fois la boucle de warmup, et l'on trace le graphe du temps d'éxécution en fonction du nombre de répétitons successives.
 
 On sépare les cas pour les différent tailles de données:
+\newpage
+    \begin{figure}[ht!]
+        \centering
+        \includegraphics[width=120mm]{MEDIA/warmupL1_Cstate.png}
+        \caption{Warmup en cache L1 avec tout Cstate autorisé}
+    \end{figure}
 
+On remarque que le warmup est relativement long, en désactivant les Cstates,celui-ci devient plus court.\\
 
+En effet, les Cstates permettent d'économier l'énergie consommée par le processeur en endormant certains composants, qui peuvent être longs a réveiller.\\
 
+Sans Cstates, le proceseur n'a que 3 états: Idle, Normal et Turbo, et passe donc très rapidement en mode turbo.\\
+\newpage
+    \begin{figure}[ht!]
+        \centering
+        \includegraphics[width=120mm]{MEDIA/warmupL1_NOCstate.png}
+        \caption{Warmup en cache L1 avec Cstate max=0}
+    \end{figure}
 
+Il nous faut donc 2000 cycles de warmup pour une taille de données retrant en cache L1.\\
+
+Pour la suite, nous continuons a faire nos calculs avec Cstate max=0
+\newpage
+    \begin{figure}[ht!]
+        \centering
+        \includegraphics[width=120mm]{MEDIA/warmupL2_NOCstate.png}
+        \caption{Warmup en cache L2}
+    \end{figure}
+
+On constate que les temps de calculs deviennent rapidement stables.
+
+\newpage
+    \begin{figure}[ht!]
+        \centering
+        \includegraphics[width=120mm]{MEDIA/closeup.png}
+        \caption{Warmup en cache L2}
+    \end{figure}
+
+    On décide de prendre 500 cycles de warmup pour avoir une marge.
+
+\newpage 
+    \begin{figure}[ht!]
+        \centering
+        \includegraphics[width=120mm]{MEDIA/warmupL3_NOCstate.png}
+        \caption{Warmup en cache L2}
+    \end{figure}
 -> méta-répétitions
 
 ->likwid(taille cache/tableaux)
