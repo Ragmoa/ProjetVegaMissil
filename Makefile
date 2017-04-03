@@ -1,5 +1,5 @@
 CC=gcc
-FLAGS=-O3 -Wall -g
+FLAGS=-O3 -Wall -g -ftree-vectorizer-verbose=5
 FILE=main.c kernel.c
 FILE_N=-o vegaMissil
 N=100
@@ -8,7 +8,7 @@ back :
 	${CC} -Og -Wall ${FILE} ${FILE_N}
 
 ref :
-	${CC} ${FLAGS} ${FILE} ${FILE_N}
+	${CC} ${FLAGS}  -ftree-vectorize ${FILE} ${FILE_N}
 
 gottagofast :
 	${CC} -Ofast -g ${FILE} ${FILE_N}
