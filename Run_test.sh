@@ -7,7 +7,7 @@ TAILLE=85
 
 z='0.0' 
 
-if test $1 = "HELP" 2> /dev/null ; then 
+if test $1 = "HELP" ; then 
 	echo "Usage : /path/Run_script [META] [WARMUP] [REPEAT] [SIZE TAB]"
 elif test ! -z $1 ; then N=$1 ; fi
 if test ! -z $2 ; then WARM=$2 ; fi
