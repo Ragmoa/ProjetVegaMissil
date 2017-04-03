@@ -13,10 +13,6 @@
         \vskip 3pt
         \author{ Doha ROUIBAA & Pablo BOURDELAS & Guillaume RYCKAERT }
     \end{minipage}
-    \begin{figure}[ht!]
-        \centering
-        \includegraphics[width=100mm]{bolideur.jpg}
-    \end{figure}
 }
 \maketitle
 
@@ -117,9 +113,34 @@ On constate que les temps de calculs deviennent rapidement stables.
     \begin{figure}[ht!]
         \centering
         \includegraphics[width=120mm]{MEDIA/warmupL3_NOCstate.png}
-        \caption{Warmup en cache L2}
+        \caption{Warmup en cache L3}
     \end{figure}
--> méta-répétitions
+
+Au niveau du L3, Nous avons commencé par tester pour 10 000 éxécutions. 
+
+\newpage 
+    \begin{figure}[ht!]
+        \centering
+        \includegraphics[width=120mm]{MEDIA/warmupL3_100000.png}
+        \caption{Warmup en cache L3 }
+    \end{figure}
+
+On remarque, que pour 100 000 éxécutions, le programme finit plus vite a cahque fois!
+On décide donc de tester pour 200 000 éxécutions 
+
+\newpage
+    \begin{figure}[ht!]
+        \centering
+        \includegraphics[width=120mm]{MEDIA/warmupL3_200000.png}
+        \caption{Warmup en cache L3 }
+    \end{figure}
+
+    On constate que pour les ~30K premières éxécutions, le temps de calcul est le même que pour chaqu'une des 10 000. Il descend ensuite a la valuer obtenue en pour chaque boucle des 100 000 tours de warmup.
+-    \begin{figure}[ht!]
+        \centering
+        \includegraphics[width=120mm]{MEDIA/warmupL3_100000.png}
+        \caption{Warmup en cache L3 }
+    \end{figure}> méta-répétitions
 
 ->likwid(taille cache/tableaux)
 ->qualité code.
