@@ -68,6 +68,7 @@ Système
 
 Pour determiner le nombre de cycles de warmup nécessaires: On lance plusieurs fois la boucle de warmup, et l'on trace le graphe du temps d'éxécution en fonction du nombre de répétitons successives.
 
+Pour vérifier nos résultats, les tests ont égalemnt été effectués pour 200 000 tours.
 On sépare les cas pour les différent tailles de données:
 \newpage
     \begin{figure}[ht!]
@@ -126,7 +127,7 @@ Au niveau du L3, Nous avons commencé par tester pour 10 000 éxécutions.
     \end{figure}
 
 On remarque, que pour 100 000 éxécutions, le programme finit plus vite a cahque fois!
-On décide donc de tester pour 200 000 éxécutions 
+On décide donc de tester pour 200 000 éxécutions.
 
 \newpage
     \begin{figure}[ht!]
@@ -135,14 +136,14 @@ On décide donc de tester pour 200 000 éxécutions
         \caption{Warmup en cache L3 }
     \end{figure}
 
-    On constate que pour les ~30K premières éxécutions, le temps de calcul est le même que pour chaqu'une des 10 000. Il descend ensuite a la valuer obtenue en pour chaque boucle des 100 000 tours de warmup.
+    On constate que pour les ~30K premières éxécutions, le temps de calcul est le même que pour chaqu'une des 10 000. Il descend ensuite a la valeur obtenue en pour chaque boucle des 100 000 tours de warmup.Nous avons donc décidé de prendre 50K tours de warmup, ce qui nous donne un résultat similaire au 100K d'après nos tests.
    \newpage
    \begin{figure}[ht!]
         \centering
         \includegraphics[width=120mm]{MEDIA/warmupRAM.png}
         \caption{Warmup en RAM }
-    \end{figure}> méta-répétitions
-En RAM, le temps d'éxécution est très inconsistant...
+    \end{figure}
+En RAM, le temps d'éxécution est très inconsistant, en regardant le graphique de plus près, on constate qu'il n'y a quasiment pas besoin de warmup. C'est pour cela que l'on décide de prendre que 200 tours.
 \newpage
 \subsection*{Flags d'optimisation}
 
@@ -175,11 +176,11 @@ Pour icc:
 On remarque que icc avec le flag fast, génère un code bien plus rapide que gcc.
 Cela viens du au fait, que bien qu'elle soit activée, gcc ne vectorise pas le code.
 
-Comme dit plus haut nous n'avons pas pu faire l'analyse du binaire générer avec icc -fast avec maqao. En effet les résultat de maqao nous fournisais n'etait pas cohérent 
-( nombre de boucle différent entre 2 expérience sur un binaire identitique, instruction non reconnu, etc ). Nous avons donc décidé d'eximiner le listing assembleur produit pour le kernel,
- avec icc sans flag ( autre que -S pour obtenir le listing ) et icc -fast. La première différence est la zone des ".byte" ne connaisant pas assez bien l'assembleur nous ne savons pas à quoi cette zone sert.
-La deuxième et que une bonne partie des instruction scalaire on était remplacé par des instruction vectorielle AVX
-( movss -> vmovss, divss -> vdivss ). On peut aussi observer que la double boucle à était déroulé, c'est déjà le cas sans flag. Nous avons aussi regarder le listing générer pour gcc en O3 ce qui nous a bien confirmer qu'aucune vectorisation n'a était appliqué. 
+Comme dit plus haut nous n'avons pas pu faire l'analyse du binaire généré avec icc -fast avec maqao. En effet les résultats de maqao nous fournissais n'etaitent pas cohérents 
+( nombre de boucles différent entre 2 expériences sur un binaire identitique, instructions non reconnues, etc ). Nous avons donc décidé d'eximiner le listing assembleur produit pour le kernel,
+ avec icc sans flag ( autre que -S pour obtenir le listing ) et icc -fast. La première différence est la zone des ".byte" ne connaissant pas assez bien l'assembleur nous ne savons pas à quoi cette zone sert.
+La deuxième est qu'une bonne partie des instructions scalaires ont été remplacées par des instructions vectorielles AVX
+( movss -> vmovss, divss -> vdivss ). On peut aussi observer que la double boucle à été déroulée, ce qui est déjà le cas sans flag. Nous avons aussi regardé le listing généré pour gcc en O3 ce qui nous a bien confirmé qu'aucune vectorisation n'a été appliquée. 
 
 
 
