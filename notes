@@ -22,4 +22,23 @@ RAM = 3x taille L3 ~18Mo ---> Taille 2120|
 -> Full Cstate
 
 -> CState max : 0
-	
+
+#####Pourquoi l'option X ? :
+
+gcc :
+
+-Og : tout opti non trivial off (voir si une quelconque opti est utilisé)(même resultat que la ref)
+-O3 : reference pour le sujet (maqao montre que la double boucle est simplifier en 1, mais puissance processeur encore mal utiliser. bien qu'activé la vectorisation ne se fait pas [Utilisation d'un #pragma ?] )
+-Ofast : optimisation agrésive, surport de l'IEEE non stricte (gain de vitesse attendu mais non conluant)
+-funsafe-math-optimizations : ( compris dans Ofast mais test a part ) IEEE non stricte (non concluant)
+-ffast-math : Flotant non Associatif + IEE non strict ( non concluant )
+-frename-registers : Technique de renommage de registre permet de casser les dépendances interinstruction (non concluant)
+-fsection-anchors : Non disponible sur l'architechture cible donc non testé - Optimisation agressive sur les accès mémoire pour diminuer le nombre de calcul d'adresse 
+
+icc :
+	no option : test de icc sans opti ( code plus lent )
+	-O3 : niveau d'optimisation équivalent a gcc
+	-fast : optimisation ultra agressive, code extrémement rapide. Doute sur la consitence du code produit car imposible de l'analyser avec maqao. Vectorisation total suposé effective 
+	-Ofast : résultat et effet similaire a gcc
+
+
