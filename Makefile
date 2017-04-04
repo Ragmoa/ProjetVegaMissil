@@ -30,9 +30,6 @@ icc :
 icc-fast :
 	icc -fast -w -debug ${FILE} ${FILE_N}
 
-icc-fast-asm :
-	icc -fast -S -w -debug ${FILE} ${FILE_N}
-
 icc-O3 :	
 	icc -O3 -w -g ${FILE} ${FILE_N}
 

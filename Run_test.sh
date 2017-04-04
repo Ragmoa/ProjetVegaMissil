@@ -12,7 +12,7 @@ if test $1 = "HELP" ; then
 elif test ! -z $1 ; then N=$1 ; fi
 if test ! -z $2 ; then WARM=$2 ; fi
 if test ! -z $3 ; then NB_RUN=$3 ; fi
-if test ! -z $4 ; then TAILE=$4 ; fi
+if test ! -z $4 ; then TAILLE=$4 ; fi
 
 k=$N
 
