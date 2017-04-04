@@ -159,13 +159,19 @@ Pour gcc:
     \item{-fsection-anchors: Optimisation agressive sur les accés mémoire pour diminuer le calcul d'adresse-non disponble sur l'archtecture cible}
 \end{itemize}
 
+Pour icc:
+\begin{itemize}
+    \item{-O3 niveau d'optimisation équivalent a celui de gcc}
+    \item{-fast : optimistation ultra agrssive, qui donne un code très rapide, mais impossible a anaylser via maqao.QUelques doutes subsitent sur sa consitance}
+    \item {-Ofast: similaire a gcc}
+\end{itemize}
 
-
-->likwid(taille cache/tableaux)
-->qualité code.
-
-
-
+\newpage
+   \begin{figure}[ht!]
+        \centering
+        \includegraphics[width=120mm]{MEDIA/time_L1.png}
+        \caption{Temps selon les flags utilisés en L1}
+    \end{figure}
 
 
 \end{document}
