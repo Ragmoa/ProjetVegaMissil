@@ -1,9 +1,9 @@
 #!/bin/sh
 
-N=1
-WARM=20000
-NB_RUN=1
-TAILLE=85
+N=50
+WARM=''
+NB_RUN=''
+TAILLE=''
 
 z='0.0' 
 
@@ -20,11 +20,10 @@ echo "" > test
 
 while test $N -ne 0; do
 	T=$(./vegaMissil ${WARM} ${NB_RUN} ${TAILLE})
-	echo $T >> test
 	z=$(bc <<< $z" + "$T)
 	N=$(($N-1))
 done
 
 z=$(bc <<< $z" / "$k".0")
 
-echo "Pour "$k" exec "$z
+echo $z
