@@ -172,6 +172,6 @@ Pour icc:
         \includegraphics[width=120mm]{MEDIA/time_L1.png}
         \caption{Temps selon les flags utilisés en L1}
     \end{figure}
-
-
+On remarque que icc en fast, génère un code bien plus rapide que gcc.
+Cela est du au fait, que bien qu'elle soit activée, gcc ne parvient pas a vectoriser le code, tandis que icc y parvient.
 \end{document}
