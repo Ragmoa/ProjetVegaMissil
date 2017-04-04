@@ -136,11 +136,30 @@ On décide donc de tester pour 200 000 éxécutions
     \end{figure}
 
     On constate que pour les ~30K premières éxécutions, le temps de calcul est le même que pour chaqu'une des 10 000. Il descend ensuite a la valuer obtenue en pour chaque boucle des 100 000 tours de warmup.
--    \begin{figure}[ht!]
+   \newpage
+   \begin{figure}[ht!]
         \centering
-        \includegraphics[width=120mm]{MEDIA/warmupL3_100000.png}
-        \caption{Warmup en cache L3 }
+        \includegraphics[width=120mm]{MEDIA/warmupRAM.png}
+        \caption{Warmup en RAM }
     \end{figure}> méta-répétitions
+En RAM, le temps d'éxécution est très inconsistant...
+\newpage
+\subsection*{Flags d'optimisation}
+
+On a éssayé différents flags de compilation suivant le processeur.
+
+Pour gcc:
+\begin{itemize}
+    \item{-Og: n'active que les optimisations triviales}
+    \item{-O3: référence }
+    \item{-Ofast: Optimisation agressive, violation de certains standards IEEE }
+    \item{-funsafe-math-optimizations : compris dans -Ofast, IEEE non-strict.}
+    \item{-ffast-math: Flottants non associatifs + IEEE non stricts}
+    \item{-frename-registers: technique de renommage de registres, pour éviter les dépendances inter-instructions}
+    \item{-fsection-anchors: Optimisation agressive sur les accés mémoire pour diminuer le calcul d'adresse-non disponble sur l'archtecture cible}
+\end{itemize}
+
+
 
 ->likwid(taille cache/tableaux)
 ->qualité code.
