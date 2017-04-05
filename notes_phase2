@@ -1,0 +1,30 @@
+0) Configurez la compilation selon le sujet (à défaut, gcc -O2)
+	gcc -O3
+1) Mesurez la performance du noyau
+	> YOLO
+2) Analysez le noyau avec MAQAO (*) et likwid-perfctr (**)
+3) Identifiez le goulet d'étranglement (ce qui limite les performances)
+	La division
+4) Proposez une optimisation (au niveau source)
+	- b[i] constant 
+5) Recommencez (rebouclez à l'étape 1) tant que vous arrivez à
+améliorer les performances. Vous pouvez soit repartir du noyau non
+optimisé, soit d'un noyau précédemment optimisé
+
+	OK
+	
+6) Une fois (mais pas avant) que vous n'arrivez plus à obtenir de gain,
+notez bien les performances correspondantes ainsi que toutes les étapes
+qui vous ont permis d'y arriver puis relâchez la contrainte sur la
+compilation : vous pouvez alors utiliser des options plus agressives
+ou/et un autre compilateur => rebouclez à l'étape 1 jusqu'à ne plus
+obtenir de gain supplémentaire
+
+7) Utilisez des directives OpenMP pour paralléliser votre noyau. S'il
+ne vous semble pas parallélisable, expliquez pourquoi, et comment on
+pourrait malgré tout le paralléliser (avec degré de concurrence moindre, autre algorithme etc.)
+
+8) Question facultative (1 à 2 points bonus) : Utilisez des intrinsics
+pour écrire/optimiser le code (niveau avancé), voire modifiez
+directement l'assembleur (niveau expert). Vous pouvez également utiliser le compilateur ISPC (https://ispc.github.io/)
+

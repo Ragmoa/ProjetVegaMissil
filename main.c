@@ -77,15 +77,16 @@ int main(int argc, char** argv){
 
 // PERF RUN
 	m = 0.0;
+	
+	start=get_cycles();
+	
 	for(i=0; i<calc ; i++){
-		start=get_cycles();
 		kernel(n,a,ind,b,c);
-		end=get_cycles();
-
-		m += (double) end-start;
 	}
 
-	if(calc!=0) m/=calc;
+	end=get_cycles();
+	
+	if(calc!=0) m= (float) end / calc;
 
 
 //OUTPUT & CLEANING
