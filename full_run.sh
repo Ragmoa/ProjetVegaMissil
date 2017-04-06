@@ -1,12 +1,12 @@
 #!/bin/sh
 
-TODO=$(tail +7 Makefile | grep : | sed -e 's/ ://')
+TODO=$(tail +7 Makefile | grep : | cut -d : -f 1)
 
 echo '' > res.tsv
 
 for i in $TODO ; do
 make $i
-T=$(./Run_test.sh 50 500 20 865  )
+T=$(bin/$i)
 echo $i"	"$T >> res.tsv
 done
 

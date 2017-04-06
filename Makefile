@@ -1,37 +1,45 @@
 CC=gcc
 FLAGS=-O3 -Wall -g 
 FILE=kernel.c main.c
-FILE_N=-o vegaMissil
-N=100
 
-Og :
-	${CC} -Og -Wall ${FILE} ${FILE_N}
+Og : ${FILE}
+	${CC} -Og -Wall ${FILE} -o bin/$@
 
-ref :
-	${CC} ${FLAGS} ${FILE} ${FILE_N}
+O2 : ${FILE}	
+	${CC} -Og -Wall ${FILE} -o bin/$@
 
-Ofast :
-	${CC} -Ofast -g ${FILE} ${FILE_N}
+O3_native : ${FILE}
+	${CC} ${FLAGS} -march=native ${FILE} -o bin/$@
 
-unsafe-math :
-	${CC} ${FLAGS} ${FILE} -funsafe-math-optimizations ${FILE_N}
+ref_O3 : ${FILE}
+	${CC} ${FLAGS} ${FILE} -o bin/$@
 
-fast-math :	
-	${CC} ${FLAGS} ${FILE} -ffast-math ${FILE_N}
+Ofast : ${FILE}
+	${CC} -Ofast -g ${FILE} -o bin/$@
 
-rename-register :	
-	${CC} ${FLAGS} ${FILE} -frename-registers ${FILE_N}
+unsafe-math : ${FILE}
+	${CC} ${FLAGS} ${FILE} -funsafe-math-optimizations -o bin/$@
 
-weird-reduce-ADDR-calc :	
-	${CC} ${FLAGS} ${FILE} -fsection-anchors ${FILE_N}
-icc :
-	icc -w -g ${FILE} ${FILE_N}
+fast-math : ${FILE}	
+	${CC} ${FLAGS} ${FILE} -ffast-math -o bin/$@
 
-icc-fast :
-	icc -fast -w -debug ${FILE} ${FILE_N}
+rename-register : ${FILE}	
+	${CC} ${FLAGS} ${FILE} -frename-registers -o bin/$@
 
-icc-O3 :	
-	icc -O3 -w -g ${FILE} ${FILE_N}
+icc : ${FILE}
+	icc -w -g ${FILE} -o bin/$@
 
-icc-Ofast :	
-	icc -Ofast -w -g ${FILE} ${FILE_N}
+icc-O2 : ${FILE}	
+	icc -O3 -w -g ${FILE} -o bin/$@
+
+icc-O3_xHost : ${FILE}	
+	icc -O3 -xHost -w -g ${FILE} -o bin/$@
+
+icc-fast : ${FILE}
+	icc -fast -w -debug ${FILE} -o bin/$@
+
+icc-O3 : ${FILE}	
+	icc -O3 -w -g ${FILE} -o bin/$@
+
+icc-Ofast : ${FILE}	
+	icc -Ofast -w -g ${FILE} -o bin/$@

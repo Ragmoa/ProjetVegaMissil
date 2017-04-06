@@ -86,7 +86,7 @@ int main(int argc, char** argv){
 
 	end=get_cycles();
 	
-	if(calc!=0) m= (float) end / calc;
+	if(calc!=0) m= (end-start) / calc;
 
 
 //OUTPUT & CLEANING
