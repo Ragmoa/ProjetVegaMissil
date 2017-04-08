@@ -1,1 +1,3 @@
-gnuplot -e "set terminal png ; set output 'warmup.png' ; plot 'warmup.tsv' with line "
+for i in $(ls plot/*.tsv); do
+	gnuplot -e "set terminal svg ; set output '$i.svg' ; plot '$i' with line"
+done

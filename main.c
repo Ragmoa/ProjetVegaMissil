@@ -12,6 +12,8 @@ int main(int argc, char** argv){
 	int n = DFLT_D_SIZE;
 	int warmup = DFLT_WARMUP;
 	int calc = DFLT_NREP;
+
+	char *fileN = NULL;
 	
 	double m=0.0;
 
@@ -43,7 +45,7 @@ int main(int argc, char** argv){
 			exit(EXIT_FAILURE);
 		break;
 	}
-
+ 
 //ALLOCATION
 	float *a = malloc(n*sizeof(float));
 	float *b = malloc(n*sizeof(float));
@@ -92,8 +94,14 @@ int main(int argc, char** argv){
 //OUTPUT & CLEANING
 	
 	printf ("%lf\n", m);
-		
-	fwarmup = fopen("warmup.tsv", "w+");
+
+	fileN = malloc((strlen(argv[0])+5)*sizeof(char)); // +5 ->".tsv\0"
+	
+	strcpy(fileN, argv[0]);
+	strcat(fileN, ".tsv");
+
+	fwarmup = fopen(fileN, "w+");
+
 	if(fwarmup == NULL) fprintf(stderr, "Imposible d'ouvrir le fichier pour le stockage des données du warmup !\n");
 	else{
 		for(i=0 ; i<warmup ; i++){

@@ -26,17 +26,11 @@ fast-math : ${FILE}
 rename-register : ${FILE}	
 	${CC} ${FLAGS} ${FILE} -frename-registers -o bin/$@
 
-icc : ${FILE}
-	icc -w -g ${FILE} -o bin/$@
-
 icc-O2 : ${FILE}	
 	icc -O3 -w -g ${FILE} -o bin/$@
 
 icc-O3_xHost : ${FILE}	
 	icc -O3 -xHost -w -g ${FILE} -o bin/$@
-
-icc-fast : ${FILE}
-	icc -fast -w -debug ${FILE} -o bin/$@
 
 icc-O3 : ${FILE}	
 	icc -O3 -w -g ${FILE} -o bin/$@
