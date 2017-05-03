@@ -181,7 +181,16 @@ Comme dit plus haut nous n'avons pas pu faire l'analyse du binaire généré ave
  avec icc sans flag ( autre que -S pour obtenir le listing ) et icc -fast. La première différence est la zone des ".byte" ne connaissant pas assez bien l'assembleur nous ne savons pas à quoi cette zone sert.
 La deuxième est qu'une bonne partie des instructions scalaires ont été remplacées par des instructions vectorielles AVX
 ( movss -> vmovss, divss -> vdivss ). On peut aussi observer que la double boucle à été déroulée, ce qui est déjà le cas sans flag. Nous avons aussi regardé le listing généré pour gcc en O3 ce qui nous a bien confirmé qu'aucune vectorisation n'a été appliquée. 
+\newpage
+   \begin{figure}[ht!]
+        \centering
+        \includegraphics[width=120mm]{MEDIA/Resultat_TEST_L2.png}
+        \caption{Temps selon les flags utilisés en L2}
+    \end{figure}
 
-
-
+   \begin{figure}[ht!]
+        \centering
+        \includegraphics[width=120mm]{MEDIA/Resultat_TEST_L3.png}
+        \caption{Temps selon les flags utilisés en L3}
+    \end{figure}
 \end{document}
