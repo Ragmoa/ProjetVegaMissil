@@ -11,6 +11,9 @@ O2 : ${FILE}
 O3_native : ${FILE}
 	${CC} ${FLAGS} -march=native ${FILE} -o bin/$@
 
+test : ${FILE}
+	${CC} ${FLAGS} ${FILE} -o $@
+
 ref_O3 : ${FILE}
 	${CC} ${FLAGS} ${FILE} -o bin/$@
 
