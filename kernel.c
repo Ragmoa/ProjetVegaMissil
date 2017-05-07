@@ -7,40 +7,40 @@
 
 
 #include "vegamissil.h"
+//#include ""
 
-void kernel (int n, float a[n], int32_t ind[n] ,float b[n] ,float (*c)[n]){
+void kernel (int n, float Aa[n], int32_t Aind[n] ,float Ab[n] ,float (*Ac)[n]){
 	int i,j;
 
-	double divTmp;
+	float *a = __builtin_assume_aligned(Aa, ALIGN);
+	int32_t *ind = __builtin_assume_aligned(Aind, ALIGN);
+	float *b = __builtin_assume_aligned(Ab, ALIGN);
+	float (*c)[n] = __builtin_assume_aligned(Ac, ALIGN);
 
-	for (i=0;i<n;i++) c[n-1][i] = a[ind[i]];
-	/*
-		Cette boucle mérite des explications Pour éléminer les accés indirecte on recopie "a" la dernière ligne de "c".
+	float divTmp;
+
+	for (i=0;i<n;i++) c[n-1][i] = a[ind[i]];//Cette boucle mérite des explications Pour éléminer les accés indirecte on recopie "a" la dernière ligne de "c". Comme ça on élimine l'accès indirect et on peut vectoriser
+
+	for (i=0;i<n;i++){
 		
-		Comme ça on élimine l'accès indirect et on peut vectoriser. 
-	*/
+		divTmp = 1 / b[i];
 
-	for (j=0;j<n;j++){
-		
-		divTmp = 1 / b[j];
-
-		for(i=0;i<n;i++){
-			c[j][i]= c[n-1][i] * divTmp;
+		for(j=0;j<n;j++){
+			c[i][j]= c[n-1][j] * divTmp;
 		}   
 	}
 }
 
 /*
-		- Original Kernel implementation -
+//		- Original Kernel implementation -
 
 void kernel (int n, float a[n], int32_t ind[n] ,float b[n] ,float (*c)[n]){
 	int i,j;
 
-	for (j=0;j<n;j++){
+	for (j=0;j<n;j++){	
 		for(i=0;i<n;i++){
 			c[i][j]= a[ind[j]] / b[i];
 		}   
 	}
 }
-
 */

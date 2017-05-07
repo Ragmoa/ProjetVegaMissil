@@ -47,11 +47,14 @@ int main(int argc, char** argv){
 	}
  
 //ALLOCATION
-	float *a = malloc(n*sizeof(float));
-	float *b = malloc(n*sizeof(float));
-	float (*c)[n] = malloc (n*n*sizeof(float));
- 
-	int32_t *ind = malloc(n*sizeof(int32_t)); //On force en int_32 pour avoir la même taille qu'un float
+	float *a = NULL;
+	posix_memalign(&a, ALIGN, n*sizeof(float));
+	float *b = NULL;
+	posix_memalign(&b, ALIGN, n*sizeof(float));
+	float (*c)[n] = NULL;
+	posix_memalign(&c, ALIGN, n*n*sizeof(float));
+	int32_t *ind = NULL;
+	posix_memalign(&ind, ALIGN, n*sizeof(int32_t)); //On force en int_32 pour avoir la même taille qu'un float
 
 	int64_t *buffWrm = malloc(warmup*sizeof(int64_t));
 
@@ -85,7 +88,13 @@ int main(int argc, char** argv){
 	for(i=0; i<calc ; i++){
 		kernel(n,a,ind,b,c);
 	}
-
+/*
+	for(i=0; i<n ; i++){
+	 for(int ol=0 ; ol<n ; ol++){
+			 printf("%.9f ", c[i][ol]);
+	 }
+	printf("\n");}
+*/
 	end=get_cycles();
 	
 	if(calc!=0) m= (end-start) / calc;

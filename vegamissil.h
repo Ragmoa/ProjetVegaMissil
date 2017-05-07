@@ -29,6 +29,7 @@
 
 #define SEED 666
 
+#define ALIGN 32
 //PROTOTYPES
 
 void kernel(int n,float a[n], int32_t ind[n],float b[n], float c[n][n]);

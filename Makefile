@@ -14,6 +14,9 @@ O3_native : ${FILE}
 test : ${FILE}
 	${CC} ${FLAGS} ${FILE} -o $@
 
+test-arch : ${FILE}
+	${CC} ${FLAGS} ${FILE} -march=native -o $@
+
 ref_O3 : ${FILE}
 	${CC} ${FLAGS} ${FILE} -o bin/$@
 
