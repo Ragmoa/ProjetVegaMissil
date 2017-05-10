@@ -1,5 +1,5 @@
 CC=gcc
-FLAGS=-O3 -Wall -g 
+FLAGS=-O3 -Wall -g -lm
 FILE=kernel.c main.c
 
 Og : ${FILE}
@@ -12,7 +12,7 @@ O3_native : ${FILE}
 	${CC} ${FLAGS} -march=native ${FILE} -o bin/$@
 
 test : ${FILE}
-	${CC} ${FLAGS} ${FILE} -o $@
+	${CC} ${FLAGS} ${FILE} -o $@ -mavx
 
 test-arch : ${FILE}
 	${CC} ${FLAGS} ${FILE} -march=native -o $@

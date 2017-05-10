@@ -5,28 +5,29 @@
 	Encacrant : Youenn LEBRAS
 */
 
-
 #include "vegamissil.h"
-//#include ""
+#include "immintrin.h"
 
-void kernel (int n, float Aa[n], int32_t Aind[n] ,float Ab[n] ,float (*Ac)[n]){
+void kernel (int n, float a[n], int32_t ind[n] ,float b[n] ,float (*c)[]){
+
 	int i,j;
+	
+	int k = ceil(n/sizeof(__m256));
 
-	float *a = __builtin_assume_aligned(Aa, ALIGN);
-	int32_t *ind = __builtin_assume_aligned(Aind, ALIGN);
-	float *b = __builtin_assume_aligned(Ab, ALIGN);
-	float (*c)[n] = __builtin_assume_aligned(Ac, ALIGN);
 
-	float divTmp;
+	__m256 divTmp;
 
-	for (i=0;i<n;i++) c[n-1][i] = a[ind[i]];//Cette boucle mérite des explications Pour éléminer les accés indirecte on recopie "a" la dernière ligne de "c". Comme ça on élimine l'accès indirect et on peut vectoriser
+	__m256 (*Vc)[]=c;
 
-	for (i=0;i<n;i++){
-		
-		divTmp = 1 / b[i];
+	for (i=0;i<n;i++) c[n-1][i] = a[ind[i]];
+	/*Cette boucle mérite des explications.
+	 Pour éléminer les accés indirecte on recopie "a" la dernière ligne de "c". Comme ça on élimine l'accès indirect et on peut vectoriser*/
 
-		for(j=0;j<n;j++){
-			c[i][j]= c[n-1][j] * divTmp;
+	for (i=0;i<n;i++){	
+		divTmp = _mm256_set1_ps(1 / b[i]);
+
+		for(j=0;j<k;j++){
+			Vc[i][j]= _mm256_mul_ps(Vc[n-1][j], divTmp);
 		}   
 	}
 }

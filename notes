@@ -1,3 +1,6 @@
+http://bits.stephan-brumme.com/inverse.html << Opti pour approx de l'inverse
+
+
 L2= 95% taille L1 ~30Ko ---> Taille 85|Taille totale 29,920 Ko |-> Warmup 10,5K
 
 L2= min 3x taille L1 max 90% taille L2 ~230Ko ---> Taille 238|--- |-> Warmup 

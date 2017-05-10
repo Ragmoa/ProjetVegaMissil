@@ -13,6 +13,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <time.h>
+#include <math.h>
 #include <stdint.h>
 #include <inttypes.h>
 #include <string.h>
@@ -32,7 +33,7 @@
 #define ALIGN 32
 //PROTOTYPES
 
-void kernel(int n,float a[n], int32_t ind[n],float b[n], float c[n][n]);
+void kernel(int n,float a[n], int32_t ind[n],float b[n], float (*c)[]);
 
 uint64_t get_cycles();
 

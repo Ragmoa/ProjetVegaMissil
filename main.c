@@ -54,7 +54,7 @@ int main(int argc, char** argv){
 	float (*c)[n] = NULL;
 	posix_memalign(&c, ALIGN, n*n*sizeof(float));
 	int32_t *ind = NULL;
-	posix_memalign(&ind, ALIGN, n*sizeof(int32_t)); //On force en int_32 pour avoir la même taille qu'un float
+	posix_memalign(&ind, ALIGN, n*sizeof(int32_t));
 
 	int64_t *buffWrm = malloc(warmup*sizeof(int64_t));
 
@@ -89,11 +89,13 @@ int main(int argc, char** argv){
 		kernel(n,a,ind,b,c);
 	}
 /*
+
 	for(i=0; i<n ; i++){
 	 for(int ol=0 ; ol<n ; ol++){
 			 printf("%.9f ", c[i][ol]);
 	 }
 	printf("\n");}
+
 */
 	end=get_cycles();
 	
