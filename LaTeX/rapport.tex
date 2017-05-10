@@ -11,7 +11,7 @@
         \centering
         Projet Vega-Missyl (Sujet 8)
         \vskip 3pt
-        \author{ Doha ROUIBAA & Pablo BOURDELAS & Guillaume RYCKAERT }
+        \author{Marina BLE & Doha ROUIBAA & Pablo BOURDELAS & Guillaume RYCKAERT }
     \end{minipage}
 }
 \maketitle
@@ -24,7 +24,7 @@
         \includegraphics[width=100mm]{MEDIA/Topo.png}
         \caption{Caractéristiques de la machine utilisé}
     \end{figure}
-\lstinputlisting{../kernel_ref.c}
+\lstinputlisting[language=c]{../kernel_ref.c}
 
 Notre boucle a besoin de 3 tableaux de taille n et d'un tableau de taille n$\times$n.\\
 Chaque case du tableau prend 4 octets (int32\_t/float)\\
@@ -193,4 +193,5 @@ La deuxième est qu'une bonne partie des instructions scalaires ont été rempla
         \includegraphics[width=120mm]{MEDIA/Resultat_TEST_L3.png}
         \caption{Temps selon les flags utilisés en L3}
     \end{figure}
+\input{Part2}
 \end{document}

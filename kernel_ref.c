@@ -1,10 +1,3 @@
-/*	
-	Projet module AOA - IATIC 4 - 2017 -
-	Kernel pour le sujet 8
-	Groupe : Doha ROUIBAA - Pablo BOURDELAS - Guillaume RYCKAERT
-	Encacrant : Youenn LEBRAS
-*/
-
 
 #include "vegamissil.h"
 
