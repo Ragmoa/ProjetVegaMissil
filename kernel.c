@@ -6,30 +6,37 @@
 */
 
 #include "vegamissil.h"
-#include "immintrin.h"
 
-void kernel (int n, float a[n], int32_t ind[n] ,float b[n] ,float (*c)[]){
+void kernel (int n, float a[n], int32_t ind[n] ,float b[n] ,float *c){
 
 	int i,j;
-	
-	int k = ceil(n/sizeof(__m256));
+	int pad=0;
 
+	if(n%ALIGN) pad=ALIGN-n%ALIGN;
+	
+	__m256* Vc=c;
+	
+	int jump = (sizeof(__m256)/sizeof(float));
 
 	__m256 divTmp;
+	__m256 resTmp;
 
-	__m256 (*Vc)[]=c;
-
-	for (i=0;i<n;i++) c[n-1][i] = a[ind[i]];
+	for (i=0;i<n;i++) c[IND(n-1,i,(n+pad))] = a[ind[i]];
 	/*Cette boucle mérite des explications.
 	 Pour éléminer les accés indirecte on recopie "a" la dernière ligne de "c". Comme ça on élimine l'accès indirect et on peut vectoriser*/
 
-	for (i=0;i<n;i++){	
-		divTmp = _mm256_set1_ps(1 / b[i]);
+	for (i=0;i<n;i++){
 
-		for(j=0;j<k;j++){
-			Vc[i][j]= _mm256_mul_ps(Vc[n-1][j], divTmp);
-		}   
+		divTmp = _mm256_set1_ps(1.0f / b[i]);
+
+		for(j=0;j<n;j+=jump){
+			/*c'l'fun */
+		 	resTmp = _mm256_load_ps(c+(n-1*(n+pad)+j));
+			resTmp = _mm256_mul_ps(resTmp, divTmp);
+			c[(i*(n+pad)+j)]=resTmp;
+		}
 	}
+
 }
 
 /*

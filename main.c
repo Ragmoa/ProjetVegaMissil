@@ -12,6 +12,7 @@ int main(int argc, char** argv){
 	int n = DFLT_D_SIZE;
 	int warmup = DFLT_WARMUP;
 	int calc = DFLT_NREP;
+	int pad = 0;
 
 	char *fileN = NULL;
 	
@@ -23,6 +24,8 @@ int main(int argc, char** argv){
 	FILE * fwarmup = NULL;
 
 	int i=0;
+
+	if(n%ALIGN) pad = ALIGN-n%ALIGN;
 	
 //ARGs PARSING
 	switch(argc){
@@ -45,16 +48,18 @@ int main(int argc, char** argv){
 			exit(EXIT_FAILURE);
 		break;
 	}
- 
+
 //ALLOCATION
-	float *a = NULL;
-	posix_memalign(&a, ALIGN, n*sizeof(float));
-	float *b = NULL;
-	posix_memalign(&b, ALIGN, n*sizeof(float));
-	float (*c)[n] = NULL;
-	posix_memalign(&c, ALIGN, n*n*sizeof(float));
-	int32_t *ind = NULL;
-	posix_memalign(&ind, ALIGN, n*sizeof(int32_t));
+	
+	float *a = malloc((n+pad)*sizeof(float));
+	
+	float *b = malloc((n+pad)*sizeof(float));
+	
+//	float *c = malloc((n*(n+pad))*sizeof(float)); /* On prend comme taille N * (N + tout les pading) */
+	float *c = aligned_alloc(32, (n*(n+pad))*sizeof(float));
+
+	
+	int32_t *ind = malloc((n+pad)*sizeof(int32_t));
 
 	int64_t *buffWrm = malloc(warmup*sizeof(int64_t));
 
@@ -67,7 +72,7 @@ int main(int argc, char** argv){
 		ind[i]=(rand()%n);
 
 		for (int j=0;j<n;j++){
-			c[i][j]=0;
+			c[IND(i,j,(n+pad))]=0;
 		}
 	}
 
@@ -88,15 +93,15 @@ int main(int argc, char** argv){
 	for(i=0; i<calc ; i++){
 		kernel(n,a,ind,b,c);
 	}
-/*
+
 
 	for(i=0; i<n ; i++){
-	 for(int ol=0 ; ol<n ; ol++){
-			 printf("%.9f ", c[i][ol]);
-	 }
-	printf("\n");}
+	for(int ol=0 ; ol<n ; ol++){
+			 printf("%.9f ", c[IND(i,ol,(n+pad))]);
+	}
+		printf("\n");
+	}
 
-*/
 	end=get_cycles();
 	
 	if(calc!=0) m= (end-start) / calc;
@@ -122,9 +127,9 @@ int main(int argc, char** argv){
 	}
 
 	free(a);
-	free(ind);
 	free(b);
-	free(c);
+//	free(c);
+	free(ind);
 	free(buffWrm);
     
 	exit(EXIT_SUCCESS);

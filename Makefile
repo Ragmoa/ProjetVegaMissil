@@ -1,5 +1,6 @@
 CC=gcc
-FLAGS=-O3 -Wall -g -lm
+FLAGS=-Og -Wall -g -lm -std=c11
+INTEL_WIZARDRY=-L /opt/intel/compilers_and_libraries/linux/lib/intel64/ -mavx
 FILE=kernel.c main.c
 
 Og : ${FILE}
@@ -12,7 +13,7 @@ O3_native : ${FILE}
 	${CC} ${FLAGS} -march=native ${FILE} -o bin/$@
 
 test : ${FILE}
-	${CC} ${FLAGS} ${FILE} -o $@ -mavx
+	${CC} ${FLAGS} ${FILE} -o $@ ${INTEL_WIZARDRY}
 
 test-arch : ${FILE}
 	${CC} ${FLAGS} ${FILE} -march=native -o $@
