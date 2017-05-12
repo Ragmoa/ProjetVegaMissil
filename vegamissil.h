@@ -32,12 +32,11 @@
 
 #define SEED 666
 
-#define ALIGN 8
 
 #define IND(row, col, n) (row*n)+col /*Attention N = SIZE+ PADDING*/
 //PROTOTYPES
 
-void kernel(int n,float a[n], int32_t ind[n],float b[n], float *c);
+void kernel(int n,float a[n], int32_t ind[n],float b[n], float (*c)[n]);
 
 uint64_t get_cycles();
 

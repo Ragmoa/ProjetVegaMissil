@@ -1,6 +1,5 @@
 CC=gcc
-FLAGS=-Og -Wall -g -lm -std=c11
-INTEL_WIZARDRY=-L /opt/intel/compilers_and_libraries/linux/lib/intel64/ -mavx
+FLAGS=-Ofast -Wall -g
 FILE=kernel.c main.c
 
 Og : ${FILE}
@@ -13,13 +12,17 @@ O3_native : ${FILE}
 	${CC} ${FLAGS} -march=native ${FILE} -o bin/$@
 
 test : ${FILE}
-	${CC} ${FLAGS} ${FILE} -o $@ ${INTEL_WIZARDRY}
+	${CC} ${FLAGS} ${FILE} -o $@
 
 test-arch : ${FILE}
 	${CC} ${FLAGS} ${FILE} -march=native -o $@
 
+test-icc : ${FILE}
+	icc -g -Ofast -xHost ${FILE} -o $@
+
+
 ref_O3 : ${FILE}
-	${CC} ${FLAGS} ${FILE} -o bin/$@
+	${CC} ${FLAGS} kernel_ref.c main.c  -o bin/$@
 
 Ofast : ${FILE}
 	${CC} -Ofast -g ${FILE} -o bin/$@
@@ -44,3 +47,4 @@ icc-O3 : ${FILE}
 
 icc-Ofast : ${FILE}	
 	icc -Ofast -w -g ${FILE} -o bin/$@
+
