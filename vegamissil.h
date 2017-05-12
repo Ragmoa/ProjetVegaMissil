@@ -1,7 +1,7 @@
 /*	
 	Projet module AOA - IATIC 4 - 2017 -
 	Header pour le sujet 8
-	Groupe : Doha ROUIBAA - Pablo BOURDELAS - Guillaume RYCKAERT
+	Groupe : Marina BLE - Doha ROUIBAA - Pablo BOURDELAS - Guillaume RYCKAERT
 	Encacrant : Youenn LEBRAS
 */
 

@@ -9,9 +9,9 @@
 \title{%
     \begin{minipage}\linewidth
         \centering
-        Projet Vega-Missyl
+        Projet Vega-Missyl (Sujet 8)
         \vskip 3pt
-        \author{ Doha ROUIBAA & Pablo BOURDELAS & Guillaume RYCKAERT }
+        \author{ Marina BLE & Doha ROUIBAA & Pablo BOURDELAS & Guillaume RYCKAERT }
     \end{minipage}
 }
 \maketitle
@@ -22,13 +22,13 @@
     \begin{figure}[ht!]
         \centering
         \includegraphics[width=100mm]{MEDIA/Topo.png}
-        \caption{Caractéristiques de la machine utilisé}
+        \caption{Caractéristiques de la machine utilisée}
     \end{figure}
-\lstinputlisting{../kernel.c}
+\lstinputlisting[language=c]{../kernel_ref.c}
 
 Notre boucle a besoin de 3 tableaux de taille n et d'un tableau de taille n$\times$n.\\
 Chaque case du tableau prend 4 octets (int32\_t/float)\\
-Le coût total en mêmoire est donc de $4n^2+12n$ octets.\\
+Le coût total en mémoire est donc de $4n^2+12n$ octets.\\
 
 Le cache L1 fait 32Ko, il faut donc prendre des tableaux de 85 cases. Coût total: 29.920 Ko
 
@@ -46,14 +46,14 @@ Pour la RAM, nous prenons des tableaux de 2120 cases: coût total 18 003.04 Ko.
     RAM & 5 864Mo & 2120 & 18.00304 Mo \\
 \end{tabular}
 
-\subsection*{Carastéristiques de la machine}
+\subsection*{Caractéristiques de la machine}
 
 Hardware
 \begin{itemize}
     \item{- I7 3630QM (~Fin 2012) :}
     \item{- 4 cores - 8 threads}
     \item{- Freq : ~2.4Ghz (Idle 1.2Ghz - Turbo mode 3.40 Ghz )}
-    \item{- 6 Go de RAM:  La capacité en ram est répartie sur 2 unités: une de 4 et une de 2 Go celà nous empéche d'utiliser du dual channel. Deplus les unité sont plutot bas de gamme}
+    \item{- 6 Go de RAM:  La capacité en RAM est répartie sur 2 unités: une de 4 et une de 2 Go, celà nous empêche d'utiliser du dual channel. De plus les unités sont plutôt bas de gamme.}
 \end{itemize}
 
 Système
@@ -64,12 +64,12 @@ Système
 
 \subsection*{Warmup}
 
+Pour déterminer le nombre de cycles de warmup nécessaires: On lance plusieurs fois la boucle de warmup, et l'on trace le graphe du temps d'éxécution en fonction du nombre de répétitons successives.
 
+On détermine ensuite le nombre de répétitons nécéssaires par méthode graphique.
 
-Pour determiner le nombre de cycles de warmup nécessaires: On lance plusieurs fois la boucle de warmup, et l'on trace le graphe du temps d'éxécution en fonction du nombre de répétitons successives.
-
-Pour vérifier nos résultats, les tests ont égalemnt été effectués pour 200 000 tours.
-On sépare les cas pour les différent tailles de données:
+Pour vérifier nos résultats, les tests ont également été effectués pour 200 000 tours.
+On sépare les cas pour les différentes tailles de données:
 \newpage
     \begin{figure}[ht!]
         \centering
@@ -79,7 +79,7 @@ On sépare les cas pour les différent tailles de données:
 
 On remarque que le warmup est relativement long, en désactivant les Cstates,celui-ci devient plus court.\\
 
-En effet, les Cstates permettent d'économier l'énergie consommée par le processeur en endormant certains composants, qui peuvent être longs a réveiller.\\
+En effet, les Cstates permettent d'économier l'énergie consommée par le processeur en endormant certains composants, qui peuvent être long a réveiller.\\
 
 Sans Cstates, le proceseur n'a que 3 états: Idle, Normal et Turbo, et passe donc très rapidement en mode turbo.\\
 \newpage
@@ -89,9 +89,9 @@ Sans Cstates, le proceseur n'a que 3 états: Idle, Normal et Turbo, et passe don
         \caption{Warmup en cache L1 avec Cstate max=0}
     \end{figure}
 
-Il nous faut donc 2000 cycles de warmup pour une taille de données retrant en cache L1.\\
+Il nous faut donc 2000 cycles de warmup pour une taille de données rentrant en cache L1.\\
 
-Pour la suite, nous continuons a faire nos calculs avec Cstate max=0
+Pour la suite, nous continuons à faire nos calculs avec Cstate max=0
 \newpage
     \begin{figure}[ht!]
         \centering
@@ -126,7 +126,7 @@ Au niveau du L3, Nous avons commencé par tester pour 10 000 éxécutions.
         \caption{Warmup en cache L3 }
     \end{figure}
 
-On remarque, que pour 100 000 éxécutions, le programme finit plus vite a cahque fois!
+On remarque, que pour 100 000 éxécutions, le programme finit plus vite à chaque fois!
 On décide donc de tester pour 200 000 éxécutions.
 
 \newpage
@@ -136,7 +136,7 @@ On décide donc de tester pour 200 000 éxécutions.
         \caption{Warmup en cache L3 }
     \end{figure}
 
-    On constate que pour les ~30K premières éxécutions, le temps de calcul est le même que pour chaqu'une des 10 000. Il descend ensuite a la valeur obtenue en pour chaque boucle des 100 000 tours de warmup.Nous avons donc décidé de prendre 50K tours de warmup, ce qui nous donne un résultat similaire au 100K d'après nos tests.
+    On constate que pour les ~30K premières éxécutions, le temps de calcul est le même que pour chacune des 10 000. Il descend ensuite à la valeur obtenue pour chaque boucle des 100 000 tours de warmup.Nous avons donc decidé de prendre 50K tours de warmup, ce qui nous donne un résultat similaire au 100K d'après nos tests.
    \newpage
    \begin{figure}[ht!]
         \centering
@@ -152,19 +152,19 @@ On a éssayé différents flags de compilation suivant le processeur.
 Pour gcc:
 \begin{itemize}
     \item{-Og: n'active que les optimisations triviales. Nous avons choisi de tester ce flag uniqument pour voir si les optimisations avait un quelconque effet}
-    \item{-O3: référence, nous avons pu voir avec maqao que la puissance processeur rester mal exploité notament à cause du manque de vectorisation, option pourtant activé.}
+    \item{-O3: référence, nous avons pu voir avec maqao que la puissance processeur reste mal exploité notament à cause du manque de vectorisation, option pourtant activé.}
     \item{-Ofast: Optimisation agressive, violation de certains standards IEEE. Ce flag devrait permettre d'accélérer la division présente }
-    \item{-funsafe-math-optimizations : compris dans -Ofast, IEEE non-strict. Ce flag est compris dans Ofast nous l'avons tester a part pour voir si la totaliter de Ofast était utile }
+    \item{-funsafe-math-optimizations : compris dans -Ofast, IEEE non-strict. Ce flag est compris dans Ofast nous l'avons tester à part pour voir si la totalité de Ofast était utile }
     \item{-ffast-math: Flottants non associatifs + IEEE non stricts.}
-    \item{-frename-registers: technique de renommage de registres, pour éléminer certaine dépendances inter-instructions}
-    \item{-fsection-anchors: Optimisation agressive sur les accés mémoire pour diminuer le calcul d'adresse-non disponble sur l'archtecture cible}
+    \item{-frename-registers: technique de renommage de registres, pour éliminer certaines dépendances inter-instructions}
+    \item{-fsection-anchors: Optimisation agressive sur les accés mémoire pour diminuer le calcul d'adresse-non disponble sur l'architecture cible}
 \end{itemize}
 
 Pour icc:
 \begin{itemize}
-    \item{-O3 niveau d'optimisation équivalent a celui de gcc}
-    \item{-fast : optimistation ultra agressive, qui donne un code très rapide, mais il nous a était impossible de l'anaylser avec maqao. Quelques doutes subsitentais sur sa consitance, avant l'examen du listing assembleur}
-    \item {-Ofast: similaire a gcc}
+    \item{-O3 niveau d'optimisation équivalent à celui de gcc}
+    \item{-fast : optimistation ultra agressive, qui donne un code très rapide, mais il nous était impossible de l'anaylser avec maqao. Quelques doutes subsistaient sur sa consistance, avant l'examen du listing assembleur}
+    \item {-Ofast: similaire à gcc}
 \end{itemize}
 
 \newpage
@@ -174,13 +174,13 @@ Pour icc:
         \caption{Temps selon les flags utilisés en L1}
     \end{figure}
 On remarque que icc avec le flag fast, génère un code bien plus rapide que gcc.
-Cela viens du au fait, que bien qu'elle soit activée, gcc ne vectorise pas le code.
+Cela vient du fait que bien qu'elle soit activée, gcc ne vectorise pas le code.
 
-Comme dit plus haut nous n'avons pas pu faire l'analyse du binaire généré avec icc -fast avec maqao. En effet les résultats de maqao nous fournissais n'etaitent pas cohérents 
+Comme dit plus haut nous n'avons pas pu faire l'analyse du binaire généré avec icc -fast avec maqao. En effet les résultats de maqao fournis n'étaitent pas cohérents 
 ( nombre de boucles différent entre 2 expériences sur un binaire identitique, instructions non reconnues, etc ). Nous avons donc décidé d'eximiner le listing assembleur produit pour le kernel,
- avec icc sans flag ( autre que -S pour obtenir le listing ) et icc -fast. La première différence est la zone des ".byte" ne connaissant pas assez bien l'assembleur nous ne savons pas à quoi cette zone sert.
+ avec icc sans flag ( autre que -S pour obtenir le listing ) et icc -fast. La première différence est la zone des ".byte" ne connaissant pas assez bien l'assembleur nous ne savons pas à quoi cette zone servait.
 La deuxième est qu'une bonne partie des instructions scalaires ont été remplacées par des instructions vectorielles AVX
-( movss -> vmovss, divss -> vdivss ). On peut aussi observer que la double boucle à été déroulée, ce qui est déjà le cas sans flag. Nous avons aussi regardé le listing généré pour gcc en O3 ce qui nous a bien confirmé qu'aucune vectorisation n'a été appliquée. 
+( movss -> vmovss, divss -> vdivss ). On peut aussi observer que la double boucle a été deroulée, ce qui est déjà le cas sans flag. Nous avons aussi regardé le listing généré pour gcc en O3 ce qui nous a bien confirmé qu'aucune vectorisation n'a été appliquée. 
 \newpage
    \begin{figure}[ht!]
         \centering
@@ -193,4 +193,5 @@ La deuxième est qu'une bonne partie des instructions scalaires ont été rempla
         \includegraphics[width=120mm]{MEDIA/Resultat_TEST_L3.png}
         \caption{Temps selon les flags utilisés en L3}
     \end{figure}
+\input{Part2}
 \end{document}

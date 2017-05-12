@@ -1,0 +1,19 @@
+\documentclass{report}
+\usepackage[utf8]{inputenc}
+\usepackage[francais]{babel}  
+\usepackage[T1]{fontenc} 
+\usepackage{graphicx}
+\usepackage{listings}
+\renewcommand{\thesection}{\arabic{section}}
+\begin{document}
+
+\section*{Optimisation du Code}
+\subsection*{La division}
+
+L'opération la plus lognue dans notre kernel est la division. A chaque exécution du kernel, celle-ci est éxécutée n^2 fois.
+
+On inverse les boucles, ainsi on ne fait plus que n divisions et n^2 multiplications par appel du kernel.
+La multiplication étant beaucoup plus rapide que la divison, on gagne beaucoup en vitesse.
+
+
+\end{document}
