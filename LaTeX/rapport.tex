@@ -16,57 +16,89 @@
 }
 \maketitle
 
-A Etienne le bolideur, et l'effet Vega-Missil
+\topskip0pt
+\vspace*{\fill}
+\begin{centering}
+    A Etienne le bolideur, et l'effet Vega-Missil.
+\end{centering}
+\vspace*{\fill}
 \newpage
 
 
-\section*{Détermination des paramètres}
+\chapter*{Sujet}
 
-\subsection*{Tailles des données}
-    \begin{figure}[ht!]
+L'objectif de ce projet est d'optimiser la boucle de calcul suivante:
+\lstinputlisting[language=c]{../kernel_ref.c}
+Le but final de ce projet et de combiner des optimisations dans le code de la boucle et au niveau du compilatuer afin d'avoir la plus grande valeur de speedup possible par rapport a la version ci-dessus, compilée avec gcc -O3.\\
+
+Dans une première partie, nous détaillerons les conditions de test; nous verrons ensuite les optimisations compilateur. Enfin, nous verrons les optimisations au niveau du code.
+
+\chapter*{Partie Meusure}
+
+\section*{Caractéristiques de la machine}
+
+\begin{figure}[ht!]
         \centering
         \includegraphics[width=100mm]{MEDIA/Topo.png}
         \caption{Caractéristiques de la machine utilisée}
     \end{figure}
-\lstinputlisting[language=c]{../kernel_ref.c}
 
-Notre boucle a besoin de 3 tableaux de taille n et d'un tableau de taille n$\times$n.\\
-Chaque case du tableau prend 4 octets (int32\_t/float)\\
-Le coût total en mémoire est donc de $4n^2+12n$ octets.\\
+\subsection*{Hardware}
 
-Le cache L1 fait 32Ko, il faut donc prendre des tableaux de 85 cases. Coût total: 29.920 Ko
-
-Le cache L2 fait 256Ko, il faut donc prendre des tableaux de 238 cases. Coût total: 229.432 Ko
-
-Le cache L3 fait 6144Ko, il faut donc prendre des tableaux de 865 cases. Coût total: 3 003.280 Ko
-
-Pour la RAM, nous prenons des tableaux de 2120 cases: coût total 18 003.04 Ko.
-
-\begin{tabular}{ l c | c c }
-    Type de Mémoire & Taille Mémoire & Taille Tableau & Coût Total\\\hline
-    L1 & 32Ko & 85 & 29.920 Ko\\ 
-    L2 & 256Ko & 238 & 229.432 Ko \\
-    L3 & 6 144Ko & 865 & 3 033.280 Ko \\
-    RAM & 5 864Mo & 2120 & 18.00304 Mo \\
-\end{tabular}
-
-\subsection*{Caractéristiques de la machine}
-
-Hardware
 \begin{itemize}
     \item{- I7 3630QM (~Fin 2012) :}
     \item{- 4 cores - 8 threads}
     \item{- Freq : ~2.4Ghz (Idle 1.2Ghz - Turbo mode 3.40 Ghz )}
+    \item{- Cache L1: 32Ko}
+    \item{- Cache L2: 256Ko}
+    \item{- Cache L3: 6 144Ko}
     \item{- 6 Go de RAM:  La capacité en RAM est répartie sur 2 unités: une de 4 et une de 2 Go, celà nous empêche d'utiliser du dual channel. De plus les unités sont plutôt bas de gamme.}
 \end{itemize}
 
-Système
+\subsection*{Système}
+
 \begin{itemize}
     \item{- gcc 6.3.1}
     \item{- Arch x86\_64 ( noyaux Linux 4.10.6-1 Arch )}
 \end{itemize}
 
-\subsection*{Warmup}
+\section*{Détermination de la taille des données}
+
+Notre boucle a besoin de 3 tableaux de taille n et d'un tableau de taille n$\times$n.\\
+Chaque case du tableau prend 4 octets (int32\_t/float)\\
+Le coût total en mémoire est donc de $4n^2+12n$ octets.\\
+
+On résoud les équations du second degré selon les tailles du cache:\\
+
+\subsection*{Cache L1}
+Pour être sur que les donnés tiennent en L1, on fait le calcul avec $5\%$ de marge.
+Le cache L1 fait 32Ko, notre équation est donc $4n^2+12n=(32 000*0.95)=30 400$
+La solution trouvée est $\approx 85.6509$, il faut donc prendre des tableaux de 85 cases. Coût total: 29.920 Ko.\\
+
+\subsection*{Cache L2}
+Pour le L2, on prenda $10\%$ de marge sur la taille du L2.
+Le cache L2 fait 256Ko, notre équation est donc $4n^2+12n=(256 000*0.9)=230 400$\\
+La solution trouvée est $\approx 238.505$, il faut donc prendre des tableaux de 238 cases. Coût total: 229.432 Ko.\\
+
+\subsection*{Cache L3}
+Pour le L3, on prendra $50\%$ de marge sur la taille du L3.
+Le cache L3 fait 6144Ko, notre équation est donc $4n^2+12n=(6 144 000*0.5)= 3 077 000$\\
+La solution trouvée est $\approx 875.57$, il faut donc prendre des tableaux de 875 cases. Coût total: 3 073.000 Ko.\\
+
+\subsection*{En RAM}
+En RAM, nous prendons 3x la taille du cache L3,pour être sur que nos données soient mises en RAM.
+Notre équation est donc $4n^2+12n=(6 144 000*3)=18 432 000$\\
+La solution trouvée est $\approx 2145.13$, il faut donc prendre des tableaux de 2145 cases. Coût total: 18 429.840 Ko.\\
+
+\begin{tabular}{ l c | c c }
+    Type de Mémoire & Taille Mémoire & Taille Tableau & Coût Total\\\hline
+    L1 & 32Ko & 85 & 29.920 Ko\\ 
+    L2 & 256Ko & 238 & 229.432 Ko \\
+    L3 & 6 144Ko & 875 & 3 073.000 Ko \\
+    RAM & 5 864Mo & 2145 & 18 429 840 Ko \\
+\end{tabular}
+
+\section*{Détermination du nombre de cycles de Warmup}
 
 Pour déterminer le nombre de cycles de warmup nécessaires: On lance plusieurs fois la boucle de warmup, et l'on trace le graphe du temps d'éxécution en fonction du nombre de répétitons successives.
 
