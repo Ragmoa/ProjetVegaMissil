@@ -1,14 +1,7 @@
-\documentclass{report}
-\usepackage[utf8]{inputenc}
-\usepackage[francais]{babel}  
-\usepackage[T1]{fontenc} 
-\usepackage{graphicx}
-\usepackage{listings}
-\renewcommand{\thesection}{\arabic{section}}
 \begin{document}
 
-\section*{Optimisation du Code}
-\subsection*{La division}
+\chapter*{L'Optimisation du Code}
+\section*{La division}
 
 L'opération la plus lognue dans notre kernel est la division. A chaque exécution du kernel, celle-ci est éxécutée $n^2$ fois.
 
@@ -25,10 +18,7 @@ On compare $3n^2$ et $3n+n^2$:\\
 Inverser les boucles est donc beaucoup plus rentable.
 Speedup offert par cette optimisation:<A Calculer>
 
-
-
-
-\subsection*{L'accés Indirect}
+\section*{L'accès Indirect}
 
 Une opération qui fait également perdre du temps au kernel est l'accés indirect sur le tableau a.
 Nous proposons d'ajouter une boucle au début du noyeau qui calculera les accés indrects avant que ceux-ci soient utilisés dans la bocule de calcul.
