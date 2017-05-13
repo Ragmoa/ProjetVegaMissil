@@ -26,18 +26,26 @@ PATH=$PATH":./bin"
 
 echo '' > res.csv
 
+echo - START TEST -
+
 for i in $TODO ; do
+	
+	echo  - COMPIL $i -
 
 	make $i
 
+	echo - RUNNING $i -
+	
 	z='0.0' #Moyen d'exec
 	echo '' > "meta_plot/"$i".tsv"
 	for j in $(seq 0 $META) ; do
-		T=$($i ${WARM} ${NB_RUN} ${DATA_SIZE})
+		T=$(taskset 3 $i ${WARM} ${NB_RUN} ${DATA_SIZE})
 		z=$(bc <<< $z" + "$T)
 		echo $j"	"$T >> "meta_plot/"$i".tsv"
 	done
 	
+	echo - RESULT WRITING FOR $i -
+
 	z=$(bc <<< $z" / "$META".0")
 	
 	echo $i","$z >> res.csv
@@ -46,10 +54,16 @@ done
 
 mv *.tsv warm_plot/
 
+echo  - PLOTING -
+
 plot_tsv warm_plot
 
 plot_tsv meta_plot
 
+echo - CQA PASS -
+
 for i in $(ls bin/*) ; do
 	$MAQAO_PATH cqa fct-loops=kernel conf=all -- $i> ${i//bin/cqa}.cqa
 done
+
+echo - DONE - 

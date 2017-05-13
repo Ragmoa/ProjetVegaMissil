@@ -1,50 +1,53 @@
 CC=gcc
-FLAGS=-Ofast -Wall -g
+FLAGS=-Wall -g
 FILE=kernel.c main.c
-
-Og : ${FILE}
-	${CC} -Og -Wall ${FILE} -o bin/$@
-
-O2 : ${FILE}	
-	${CC} -Og -Wall ${FILE} -o bin/$@
-
-O3_native : ${FILE}
-	${CC} ${FLAGS} -march=native ${FILE} -o bin/$@
-
-test : ${FILE}
-	${CC} ${FLAGS} ${FILE} -o $@
-
-test-arch : ${FILE}
-	${CC} ${FLAGS} ${FILE} -march=native -o $@
-
-test-icc : ${FILE}
-	icc -g -Ofast -xHost ${FILE} -o $@
+NFILE=kernel_ref.c main.c
+OUTDIR=bin/
 
 
-ref_O3 : ${FILE}
-	${CC} ${FLAGS} kernel_ref.c main.c  -o bin/$@
+Og : ${NFILE}
+	${CC} -Og -Wall ${NFILE} -o ${OUTDIR}$@
 
-Ofast : ${FILE}
-	${CC} -Ofast -g ${FILE} -o bin/$@
+O2 : ${NFILE}	
+	${CC} -Og -Wall ${NFILE} -o ${OUTDIR}$@
 
-unsafe-math : ${FILE}
-	${CC} ${FLAGS} ${FILE} -funsafe-math-optimizations -o bin/$@
+O3_native : ${NFILE}
+	${CC} ${FLAGS} -O3 -march=native ${NFILE} -o ${OUTDIR}$@
 
-fast-math : ${FILE}	
-	${CC} ${FLAGS} ${FILE} -ffast-math -o bin/$@
+ref_O3 : ${NFILE}
+	${CC} ${FLAGS} -O3  ${NFILE}  -o ${OUTDIR}$@
 
-rename-register : ${FILE}	
-	${CC} ${FLAGS} ${FILE} -frename-registers -o bin/$@
+Ofast : ${NFILE}
+	${CC} ${FLAGS} -Ofast ${NFILE} -o ${OUTDIR}$@
 
-icc-O2 : ${FILE}	
-	icc -O3 -w -g ${FILE} -o bin/$@
+unsafe-math : ${NFILE}
+	${CC} ${FLAGS} ${NFILE} -O3 -funsafe-math-optimizations -o ${OUTDIR}$@
 
-icc-O3_xHost : ${FILE}	
-	icc -O3 -xHost -w -g ${FILE} -o bin/$@
+fast-math : ${NFILE}	
+	${CC} ${FLAGS} ${NFILE} -O3 -ffast-math -o ${OUTDIR}$@
 
-icc-O3 : ${FILE}	
-	icc -O3 -w -g ${FILE} -o bin/$@
+rename-register : ${NFILE}	
+	${CC} ${FLAGS} ${NFILE} -O3 -frename-registers -o ${OUTDIR}$@
 
-icc-Ofast : ${FILE}	
-	icc -Ofast -w -g ${FILE} -o bin/$@
+icc-O2 : ${NFILE}	
+	icc -O2 -w -g ${NFILE} -o ${OUTDIR}$@
+
+icc-O3_xHost : ${NFILE}	
+	icc -O3 -xHost -w -g ${NFILE} -o ${OUTDIR}$@
+
+icc-O3 : ${NFILE}	
+	icc -O3 -w -g ${NFILE} -o ${OUTDIR}$@
+
+icc-Ofast : ${NFILE}	
+	icc -Ofast -w -g ${NFILE} -o ${OUTDIR}$@
+
+opti : ${FILE}
+	${CC} ${FLAGS} -O3 ${FILE} -o ${OUTDIR}$@
+
+opti-arch : ${FILE}
+	${CC} ${FLAGS} -O3 ${FILE} -march=native -o ${OUTDIR}$@
+
+opti-icc : ${FILE}
+	icc -g -Ofast -xHost ${FILE} -o ${OUTDIR}$@
+
 
