@@ -1,0 +1,62 @@
+eo :
+ - la boucle de répétitions, contrairement à celle de warmups, doit être à l'intérieur du start - stop. Le but des répétitions étant justement d'"espacer" suffisamment le stop du start...
+ - il fallait expliquer que vous trouviez le nombre d'éléments par résolution de l'équation du second degré + pourquoi vous n'avez pas utilisé la totalité de la capacité des caches
+ - bien joué pour les C-states
+ - pas d'analyse de sensibilité pour le nb répéts ni pour métarépéts. Par contre plutôt bien fait pour warmup
+ - aucun élément de la méthode de mesure n'a été justifié. La note "mesures" sera sensiblement meilleure quand ce sera corrigé
+ - icc par défaut est en O0 lorsque -g est utilisé. Il fallait donc explicitement indiquer -O2. De toutes façons il était demandé d'utiliser -O2 comme 4ème combinaison à tester
+
+yl :
+ - rapport un peu court et non structuré (pas de séparation des parties)
+ - manque icc -O3 -xHost et -O3 -march=native
+ - FLAGS additionnels : pas d'explication du pourquoi ca n'a rien fait
+ - Il y a de bonnes analyses, mais il manque souvent l'essentiel et de quoi étoffer un peu.
+ - Maqao utilisé mais non expliqué
+ - graphiques : Manque de titre/titre des axes/ les label ne sont pas bons/ mais d'explications
+ - Pas de differenciation sur qui à fait quoi (qui a fait L2 ?...)
+ - Malheureusement il y a un gros manque d'explication et de texte. Il n'y a pas d'introduction, ni au sujet ni sur les outils utilisés.
+
+<=============================================================================================>
+
+A présent pour la partie mesures : vous trouverez en fin de ce mail quelques axes d'amélioration que j'avais donnés l'an dernier et encore valable cette année.
+
+La plupart de ces éléments ont été abordés mardi dernier.
+
+Globalement, vous devez nous montrer une certaine rigueur expérimentale et justifier tous les points importants (impactant/expliquant les mesures) même s'ils vous ont été imposés/conseillés.
+
+Spécifiques pour cette année :
+ - globalement l'analyse de sensibilité n'est que partiellement faite ou/et mal faite / incomprise
+  * pour les répétitions et les warmups, on doit visualiser la convergence (vers une asymptote) des cycles par itération/répétition, chaque point de la courbe étant la médiane ou la moyenne d'un nombre suffisant de méta-répétitions
+  * pour déterminer le nombre minimum acceptable de méta-répétitions vous pouvez soit tracer 30-40 mesures consécutives soit, pour chaque nombre de métas de 1 à 30-40, tracer l'écart type (ou équivalent) des 31 médianes correspondantes
+ - utilisez bien les mêmes termes que nous :
+  * itération = un "tour" dans une boucle du noyau/sujet
+  * répétition = un appel du noyau/sujet en régime permanent. Préciser "de warmup" (ou équivalent) quand il s'agit du régime transitoire.
+  * méta-répétition = répétition du programme via un script. Permet d'avoir une population statistique sur laquelle vous aurez un minimum, une médiane etc.
+
+Bon courage,
+eo
+
+============================================================
+
+1) Expliquez ce que vous avez fait pour améliorer la stabilité des mesures (à nombre de métarépétitions fixé) : reboot du PC dans un mode spécial etc.
+
+2) Déjà dit : justifiez (pas simplement dire que ça a été implémenté dans votre driver) les 5 points clés affectant la qualité de vos mesures (CF mail précédent). Si vous ne vous souvenez plus, CF PDF envoyé en début de module + redemandez une explication à votre encadrant. Les points suivants étaient particulièrement peu/mal expliqués dans vos rapports :
+ - sonde (pourquoi RDTSC et pas autre chose, quelles sont ses limites, comment en avez vous tenu compte ?...)
+ - répétitions (qui n'ont pas le même rôle que les warmups ni les métarépétitions). Ne pas confondre précision (erreur sur chaque mesure) et stabilité (variation de la mesure d'un run au suivant).
+ - warmup : "chauffer le processeur" n'est pas suffisant : ne prouve pas que vous avez compris. Pire, prouve que vous n'avez pas compris Il faut expliquer plus en détails ce qui se passe micro-architecturalement. Vous avez eu pour ça les cours de M. Jalby, mon mini cours en début de semestre et mes explications en RDV...
+
+3) Chaque point dans vos tableaux de valeurs ou graphiques devrait être la médiane (au pire la moyenne) de n mesures (où n est le nombre de "méta-répétitions"). Par exemple, quand vous donnez les résultats de votre analyse de sensibilité pour fixer le nombre de warmups, admettons que vous trouviez en cycles par itération : 4.87 (pas de warmup), 3.75 (1 seule répétition de warmup), 5.44, 3.23, 3.15 (4 fois). 5.44 était probablement lié à la préemption du processeur pour une autre tache, ce n'est donc pas représentatif de la réalité, de ce que vous mesurerez en moyenne en répétant 2x votre noyau avant de démarrer la mesure. En utilisant la médiane (plutôt qu'une mesure unique) vous auriez alors eu plutôt : 4.85, 3.72, 3.48, 3.22, 3.13... Ce qui permet ensuite de préciser de façon crédible la valeur à partir de laquelle on peut raisonnablement s'arrêter : ici 5 répéts de warmup. La courbe sera beaucoup plus régulière, "lisse" (ici : une sorte d'hyperbole).
+
+4) Votre environnement d'exécution matériel et logiciel doit être précisé :
+ - version OS (ex : Ubuntu 15.04 x86_64 avec noyau 3.11.5)
+ - version compilateur (ex : gcc 4.8.3 et icc 16.0.2). CF gcc/icc -v pour avoir leur version
+ - modèle processeur (ex : Intel Core i7 4550 @ 3.4 GHz). Mieux : préciser sa micro-architecture (Haswell dans mon exemple) et ce que ça implique par rapport à la génération précédente : vectorisation 256 bits étendue aux entiers grâce au jeu d'instruction AVX2. Encore mieux (typiquement lorsque vous discuterez les rapports CQA) : dire en quoi ça serait susceptible d'améliorer la performance de votre boucle.
+ - hiérarchie caches (on peut ici copier-coller le petit diagramme "ASCII-art" généré par likwid-topology)
+ - éventuellement (surtout si vous êtes en RAM) : techno + configuration RAM : DDR3-1066 en dual channel
+ - ne pas copier-coller la sortie complète de likwid-topology en début de rapport ! Mais déporter en annexe et conserver uniquement le court extrait qui vous est utile.
+
+5) Pour la justification des tailles, j'ai parfois vu le coeff de 0.95 appliqué sur tous les niveaux de cache (considérant que seuls 95% de la capacité peut être utilisée). D'une part ce n'est que pour le L1 que j'ai recommandé ce facteur de correction (c'est moins pour les suivants). Et d'autre part il faut expérimentalement confirmer cette borne. Un tableau ne tient pas en cache sous prétexte qu'il fait 95% de sa taille mais :
+ - d'une part parce qu'il est suffisamment grand pour ne plus tenir dans le niveau inférieur (ou tout du moins que la proportion résidente au niveau inférieure soit négligeable par rapport à celle dans le niveau ciblé)
+ - d'autre part suffisamment petit pour qu'il n'y ait rien dans le niveau supérieur.
+
+6) Constaté avec mes groupes la semaine dernière : utiliser, pour allouer une matrice 2D d'ordre n, n + 1 mallocs de n cases (au lieu d'un seul de n x n cases) fait perdre beaucoup de performances. Dans un de mes groupes : temps d'exécution triplé ! En C, il faut utiliser comme je vous l'aviez montré le "pointeur sur tableau" : double (*a) [size] = malloc (size * size * sizeof (a[0][0]));

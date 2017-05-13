@@ -7,53 +7,89 @@
 \renewcommand{\thesection}{\arabic{section}}
 \begin{document}
 
-\section*{Détermination des paramètres}
+\topskip0pt
+\vspace*{\fill}
+\begin{centering}
+    A Etienne le bolideur, et l'effet Vega-Missil.
+\end{centering}
+\vspace*{\fill}
+\newpage
 
-\subsection*{Tailles des données}
-    \begin{figure}[ht!]
+
+\chapter*{Sujet}
+
+L'objectif de ce projet est d'optimiser la boucle de calcul suivante:
+\lstinputlisting[language=c]{../kernel_ref.c}
+Le but final de ce projet et de combiner des optimisations dans le code de la boucle et au niveau du compilatuer afin d'avoir la plus grande valeur de speedup possible par rapport a la version ci-dessus, compilée avec gcc -O3.\\
+
+Dans une première partie, nous détaillerons les conditions de test; nous verrons ensuite les optimisations compilateur. Enfin, nous verrons les optimisations au niveau du code.
+
+\chapter*{Partie Meusure}
+
+\section*{Caractéristiques de la machine}
+
+\begin{figure}[ht!]
         \centering
         \includegraphics[width=100mm]{MEDIA/Topo.png}
         \caption{Caractéristiques de la machine utilisée}
     \end{figure}
-\lstinputlisting[language=c]{../kernel_ref.c}
 
-Notre boucle a besoin de 3 tableaux de taille n et d'un tableau de taille n$\times$n.\\
-Chaque case du tableau prend 4 octets (int32\_t/float)\\
-Le coût total en mémoire est donc de $4n^2+12n$ octets.\\
+\subsection*{Hardware}
 
-Le cache L1 fait 32Ko, il faut donc prendre des tableaux de 85 cases. Coût total: 29.920 Ko
-
-Le cache L2 fait 256Ko, il faut donc prendre des tableaux de 238 cases. Coût total: 229.432 Ko
-
-Le cache L3 fait 6144Ko, il faut donc prendre des tableaux de 865 cases. Coût total: 3 003.280 Ko
-
-Pour la RAM, nous prenons des tableaux de 2120 cases: coût total 18 003.04 Ko.
-
-\begin{tabular}{ l c | c c }
-    Type de Mémoire & Taille Mémoire & Taille Tableau & Coût Total\\\hline
-    L1 & 32Ko & 85 & 29.920 Ko\\ 
-    L2 & 256Ko & 238 & 229.432 Ko \\
-    L3 & 6 144Ko & 865 & 3 033.280 Ko \\
-    RAM & 5 864Mo & 2120 & 18.00304 Mo \\
-\end{tabular}
-
-\subsection*{Caractéristiques de la machine}
-
-Hardware
 \begin{itemize}
     \item{- I7 3630QM (~Fin 2012) :}
     \item{- 4 cores - 8 threads}
     \item{- Freq : ~2.4Ghz (Idle 1.2Ghz - Turbo mode 3.40 Ghz )}
+    \item{- Cache L1: 32Ko}
+    \item{- Cache L2: 256Ko}
+    \item{- Cache L3: 6 144Ko}
     \item{- 6 Go de RAM:  La capacité en RAM est répartie sur 2 unités: une de 4 et une de 2 Go, celà nous empêche d'utiliser du dual channel. De plus les unités sont plutôt bas de gamme.}
 \end{itemize}
 
-Système
+\subsection*{Système}
+
 \begin{itemize}
     \item{- gcc 6.3.1}
     \item{- Arch x86\_64 ( noyaux Linux 4.10.6-1 Arch )}
 \end{itemize}
 
-\subsection*{Warmup}
+\section*{Détermination de la taille des données}
+
+Notre boucle a besoin de 3 tableaux de taille n et d'un tableau de taille n$\times$n.\\
+Chaque case du tableau prend 4 octets (int32\_t/float)\\
+Le coût total en mémoire est donc de $4n^2+12n$ octets.\\
+
+On résoud les équations du second degré selon les tailles du cache:\\
+
+\subsection*{Cache L1}
+Pour être sur que les donnés tiennent en L1, on fait le calcul avec $5\%$ de marge.
+Le cache L1 fait 32Ko, notre équation est donc $4n^2+12n=(32 000*0.95)=30 400$
+La solution trouvée est $\approx 85.6509$, il faut donc prendre des tableaux de 85 cases. Coût total: 29.920 Ko.\\
+
+\subsection*{Cache L2}
+Pour le L2, on prenda $10\%$ de marge sur la taille du L2.
+Le cache L2 fait 256Ko, notre équation est donc $4n^2+12n=(256 000*0.9)=230 400$\\
+La solution trouvée est $\approx 238.505$, il faut donc prendre des tableaux de 238 cases. Coût total: 229.432 Ko.\\
+
+\subsection*{Cache L3}
+Pour le L3, on prendra $50\%$ de marge sur la taille du L3.
+Le cache L3 fait 6144Ko, notre équation est donc $4n^2+12n=(6 144 000*0.5)= 3 077 000$\\
+La solution trouvée est $\approx 875.57$, il faut donc prendre des tableaux de 875 cases. Coût total: 3 073.000 Ko.\\
+
+\subsection*{En RAM}
+En RAM, nous prendons 3x la taille du cache L3,pour être sur que nos données soient mises en RAM.
+Notre équation est donc $4n^2+12n=(6 144 000*3)=18 432 000$\\
+La solution trouvée est $\approx 2145.13$, il faut donc prendre des tableaux de 2145 cases. Coût total: 18 429.840 Ko.\\
+
+\begin{tabular}{ l c | c c }
+    Type de Mémoire & Taille Mémoire & Taille Tableau & Coût Total\\\hline
+    L1 & 32Ko & 85 & 29.920 Ko\\ 
+    L2 & 256Ko & 238 & 229.432 Ko \\
+    L3 & 6 144Ko & 875 & 3 073.000 Ko \\
+    RAM & 5 864Mo & 2145 & 18 429 840 Ko \\
+\end{tabular}
+
+\section*{Détermination du nombre de cycles de Warmup}
 
 Pour déterminer le nombre de cycles de warmup nécessaires: On lance plusieurs fois la boucle de warmup, et l'on trace le graphe du temps d'éxécution en fonction du nombre de répétitons successives.
 
@@ -61,7 +97,9 @@ On détermine ensuite le nombre de répétitons nécéssaires par méthode graph
 
 Pour vérifier nos résultats, les tests ont également été effectués pour 200 000 tours.
 On sépare les cas pour les différentes tailles de données:
+
 \newpage
+\subsection*{Warmup en Cache L1}
     \begin{figure}[ht!]
         \centering
         \includegraphics[width=120mm]{MEDIA/warmupL1_Cstate.png}
@@ -84,6 +122,8 @@ Il nous faut donc 2000 cycles de warmup pour une taille de données rentrant en 
 
 Pour la suite, nous continuons à faire nos calculs avec Cstate max=0
 \newpage
+
+\subsection*{Warmup en Cache L2}
     \begin{figure}[ht!]
         \centering
         \includegraphics[width=120mm]{MEDIA/warmupL2_NOCstate.png}
@@ -101,7 +141,8 @@ On constate que les temps de calculs deviennent rapidement stables.
 
     On décide de prendre 500 cycles de warmup pour avoir une marge.
 
-\newpage 
+\newpage
+\subsection*{Warmup en Cache L3}
     \begin{figure}[ht!]
         \centering
         \includegraphics[width=120mm]{MEDIA/warmupL3_NOCstate.png}
@@ -129,55 +170,23 @@ On décide donc de tester pour 200 000 éxécutions.
 
     On constate que pour les ~30K premières éxécutions, le temps de calcul est le même que pour chacune des 10 000. Il descend ensuite à la valeur obtenue pour chaque boucle des 100 000 tours de warmup.Nous avons donc decidé de prendre 50K tours de warmup, ce qui nous donne un résultat similaire au 100K d'après nos tests.
    \newpage
+
+\subsection*{Warmup en RAM}
    \begin{figure}[ht!]
         \centering
         \includegraphics[width=120mm]{MEDIA/warmupRAM.png}
         \caption{Warmup en RAM }
     \end{figure}
 En RAM, le temps d'éxécution est très inconsistant, en regardant le graphique de plus près, on constate qu'il n'y a quasiment pas besoin de warmup. C'est pour cela que l'on décide de prendre que 200 tours.
-\newpage
-\subsection*{Flags d'optimisation}
 
-On a éssayé différents flags de compilation suivant le processeur.
+\section*{Nombre de répétitions}
 
-Pour gcc:
-\begin{itemize}
-    \item{-Og: n'active que les optimisations triviales. Nous avons choisi de tester ce flag uniqument pour voir si les optimisations avait un quelconque effet}
-    \item{-O3: référence, nous avons pu voir avec maqao que la puissance processeur reste mal exploité notament à cause du manque de vectorisation, option pourtant activé.}
-    \item{-Ofast: Optimisation agressive, violation de certains standards IEEE. Ce flag devrait permettre d'accélérer la division présente }
-    \item{-funsafe-math-optimizations : compris dans -Ofast, IEEE non-strict. Ce flag est compris dans Ofast nous l'avons tester à part pour voir si la totalité de Ofast était utile }
-    \item{-ffast-math: Flottants non associatifs + IEEE non stricts.}
-    \item{-frename-registers: technique de renommage de registres, pour éliminer certaines dépendances inter-instructions}
-    \item{-fsection-anchors: Optimisation agressive sur les accés mémoire pour diminuer le calcul d'adresse-non disponble sur l'architecture cible}
-\end{itemize}
 
-Pour icc:
-\begin{itemize}
-    \item{-O3 niveau d'optimisation équivalent à celui de gcc}
-    \item{-fast : optimistation ultra agressive, qui donne un code très rapide, mais il nous était impossible de l'anaylser avec maqao. Quelques doutes subsistaient sur sa consistance, avant l'examen du listing assembleur}
-    \item {-Ofast: similaire à gcc}
-\end{itemize}
 
-\newpage
-   \begin{figure}[ht!]
-        \centering
-        \includegraphics[width=120mm]{MEDIA/time_L1.png}
-        \caption{Temps selon les flags utilisés en L1}
-    \end{figure}
-On remarque que icc avec le flag fast, génère un code bien plus rapide que gcc.
-Cela vient du fait que bien qu'elle soit activée, gcc ne vectorise pas le code.
+\section*{Nombre de méta-répétitions}
 
-Comme dit plus haut nous n'avons pas pu faire l'analyse du binaire généré avec icc -fast avec maqao. En effet les résultats de maqao fournis n'étaitent pas cohérents 
-( nombre de boucles différent entre 2 expériences sur un binaire identitique, instructions non reconnues, etc ). Nous avons donc décidé d'eximiner le listing assembleur produit pour le kernel,
- avec icc sans flag ( autre que -S pour obtenir le listing ) et icc -fast. La première différence est la zone des ".byte" ne connaissant pas assez bien l'assembleur nous ne savons pas à quoi cette zone servait.
-La deuxième est qu'une bonne partie des instructions scalaires ont été remplacées par des instructions vectorielles AVX
-( movss -> vmovss, divss -> vdivss ). On peut aussi observer que la double boucle a été deroulée, ce qui est déjà le cas sans flag. Nous avons aussi regardé le listing généré pour gcc en O3 ce qui nous a bien confirmé qu'aucune vectorisation n'a été appliquée. 
-\newpage
-   \begin{figure}[ht!]
-        \centering
-        \includegraphics[width=120mm]{MEDIA/Resultat_TEST_L2.png}
-        \caption{Temps selon les flags utilisés en L2}
-    \end{figure}
+
+\input{Part1}
 
    \begin{figure}[ht!]
         \centering
