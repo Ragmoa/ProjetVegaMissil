@@ -28,4 +28,15 @@ Lors du calcul de la dernière ligne, l'indice indirect est donc lu pour la dern
 
 Speedup offert par cette optimisation:<A Calculer>
 
+\section*{Tiling}
+Nous avons également envisagé de faire du tiling. Le tiling est une méthode consistant a découper le traitement de la matrice en un ensemble de sous-traitements sur des sous-ensembles de cette matrice..Ces matrices étant plus petites, elle peuvent être chargées dans des niveaux de cahche plus rapides, et donc accélérer le traitement.
+Malheursement, nous nous sommes rapidement rendus compte que cette méthode n'était pas adaptée a notre traitement.
+En effet, le kernel charge intégralement la matrice, et rien ne garantit que le compilateur remarque les traitements multiples, et optimise en conséquence.
+De plus, cela nuirait a notre optimisation sur la division, si par exemple on découpe notre matrice en 100 blocs de même taille, il nous faudra faire $10\times n $ divisions.
+
+Nous n'avons donc pas appliqué cette methode.
+
+
+
+
 
