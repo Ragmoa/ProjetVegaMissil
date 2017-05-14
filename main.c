@@ -22,7 +22,7 @@ int main(int argc, char** argv){
 
 	FILE * fwarmup = NULL;
 
-	int i=0;
+	int i=0,j=0;
 	
 //ARGs PARSING
 	switch(argc){
@@ -90,14 +90,9 @@ int main(int argc, char** argv){
 		kernel(n,a,ind,b,c);
 	}
 
-/*
-	for(i=0; i<n ; i++){
-	for(int ol=0 ; ol<n ; ol++){
-			 printf("%.9f ", c[IND(i,ol,(n+pad))]);
-	}
-		printf("\n");
-	}
-*/
+
+//	for(i=0; i<n ; i++) for(j=0 ; j<n ; j++) printf("%.9f\n", c[i][j]);
+
 	end=get_cycles();
 	
 	if(calc!=0) m= (end-start) / calc;
