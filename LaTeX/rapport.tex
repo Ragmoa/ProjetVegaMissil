@@ -4,6 +4,7 @@
 \usepackage[T1]{fontenc} 
 \usepackage{graphicx}
 \usepackage{listings}
+\usepackage{textcomp}
 \renewcommand{\thesection}{\arabic{section}}
 \begin{document}
 
@@ -51,9 +52,8 @@ Dans une première partie, nous détaillerons les conditions de test; nous verro
 \begin{itemize}
     \item{- gcc 6.3.1}
     \item{- Arch x86\_64 ( noyaux Linux 4.10.6-1 Arch )}
-    
-     \\Pour sortir un maximum de parasites de la mesure les C-states ont été déactivés, un thread cpu (le n°3) a été réservé grace à isolcpus et l'éxécution des binaires à tester fixé à ce dernier à l'aide de taskset. Deplus le systeme n'a été démaré qu'avec le strict minium (pas de serveur X, ni réseau, etc).
 \end{itemize}
+     Pour sortir un maximum de parasites de la mesure les C-states ont été déactivés, un thread cpu (le n°3) a été réservé grace à isolcpus et l'éxécution des binaires à tester fixé à ce dernier à l'aide de taskset. Deplus le systeme n'a été démaré qu'avec le strict minium (pas de serveur X, ni réseau, etc).
 
 \section*{Détermination de la taille des données}
 
