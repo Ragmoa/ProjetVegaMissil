@@ -180,24 +180,25 @@ On décide donc de tester pour 200 000 éxécutions.
 En RAM, le temps d'éxécution est très inconsistant, en regardant le graphique de plus près, on constate qu'il n'y a quasiment pas besoin de warmup. C'est pour cela que l'on décide de prendre que 200 tours.
 \newpage
 \section*{Nombre de répétitions}
-Afin de déterminer le nombre de répétitions a utiliser pour nos mesures, nous fixons la taille des données, ainsi que le nombre de méta-répétitions. On regarde alors le temps moyen pour une répétition, pour 4 a 50 répétitions.
+Afin de déterminer le nombre de répétitions a utiliser pour nos mesures, nous fixons la taille des données, ainsi que le nombre de méta-répétitions. On regarde alors la mediane du temps consommé pour une répétition, pour 4 a 50 répétitions.
 \begin{figure}[ht!]
     \centering
     \includegraphics[width=100mm]{MEDIA/rep.png}
-    \caption{Temps moyen par répétition pour 4 a 50 répétitions}
+    \caption{Temps median par répétition pour 4 a 50 répétitions}
 \end{figure}
 
-On calcule enfin la médiane en fonction du nombre de répétitions.
-On choisit celle-ci, soit 40 répétitions.
-\newpage
+On regarde pour quel nombre de répétitions la mediane semble stable.
+
+Nous avons choisi ici 40 répétitons.
+\newpage.
 \section*{Nombre de méta-répétitions}
 On applique la même méthode afin de déterminer le nombre de méta-répétitions.
 \begin{figure}[ht!]
     \centering
     \includegraphics[width=100mm]{MEDIA/metamed.png}
-    \caption{Temps moyen par méta-répétition pour 4 a 50 méta-répétitions}
+    \caption{Temps median par méta-répétition pour 4 a 50 méta-répétitions}
 \end{figure}
-On trouve comme valeur une médiane de: 27 méta-répétitions.
+On trouve comme valeur: 27 méta-répétitions.
 \newpage
 
 \input{Part1}
