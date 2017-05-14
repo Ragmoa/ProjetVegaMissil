@@ -44,6 +44,9 @@ icc-Ofast : ${NFILE}
 opti : ${FILE}
 	${CC} ${FLAGS} -O3 ${FILE} -o ${OUTDIR}$@
 
+opti-OnlyInv :
+	${CC} ${FLAGS} -O3 main.c kernel_invOnly.c -o ${OUTDIR}$@
+
 opti-arch : ${FILE}
 	${CC} ${FLAGS} -O3 ${FILE} -march=native -o ${OUTDIR}$@
 
