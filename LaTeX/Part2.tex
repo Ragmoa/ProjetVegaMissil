@@ -63,5 +63,8 @@ Ce flag s'écrit --march=native pour gcc et -xHost pour icc. Il indique au compi
     \item{Speedup pour icc (Avec les autres opti):$\approx 11.30$}\\
 \end{itemize}
 
+\section*{Cohérence des résultats}
+
+A chaque étape de l'optimisation, nous avons contrôlé la cohérence des résultats. Pour cela, nous avons utilisé vim, et gardé une valeur constante depuis le début du projet pour générer nos valeurs aléatoires. La plus grosse perte de précision que nous ayons trouvé est de l'ordre de $10^{-6}$
 
 
