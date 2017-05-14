@@ -15,6 +15,30 @@ function plot_tsv {
 	done
 }
 
+function plot_metaTime {
+	echo - META ESTIMATE PLOT -
+	
+	for i in $(seq 4 50) ; do
+		med=$(mktemp)
+
+		echo '' > $med	
+
+		for j in $(seq 0 $i) ; do
+			T=$(taskset 3 ref_O3 ${WARM} ${NB_RUN} ${DATA_SIZE})
+			echo $T >> $med
+		done
+	
+		echo - RESULT WRITING FOR $i -
+
+		z=$(sort -n $med | sed -ne "$(($i/2+1))p")
+	
+		echo $i"	"$z >> metamed.tsv
+	done
+
+	gnuplot -e "set terminal svg ; set output 'metamed.svg' ; plot 'metamed.tsv' with line"
+
+}
+
 if test ! -d warm_plot ; then  mkdir warm_plot ; fi
 if test ! -d meta_plot ; then  mkdir meta_plot ; fi
 if test ! -d bin ; then  mkdir bin ; fi
@@ -36,17 +60,20 @@ for i in $TODO ; do
 
 	echo - RUNNING $i -
 	
-	z='0.0' #Moyen d'exec
+	med=$(mktemp)
+
+	echo '' > $med	
+
 	echo '' > "meta_plot/"$i".tsv"
 	for j in $(seq 0 $META) ; do
 		T=$(taskset 3 $i ${WARM} ${NB_RUN} ${DATA_SIZE})
-		z=$(bc <<< $z" + "$T)
+		echo $T >> $med
 		echo $j"	"$T >> "meta_plot/"$i".tsv"
 	done
 	
 	echo - RESULT WRITING FOR $i -
 
-	z=$(bc <<< $z" / "$META".0")
+	z=$(sort -n $med | sed -ne "$(($META/2+1))p")
 	
 	echo $i","$z >> res.csv
 	
@@ -54,7 +81,10 @@ done
 
 mv *.tsv warm_plot/
 
+
 echo  - PLOTING -
+
+plot_metaTime
 
 plot_tsv warm_plot
 
