@@ -2,10 +2,10 @@
 
 #SET RUN PARAM HERE
 
-META=40
-WARM=''
-NB_RUN=''
-DATA_SIZE=''
+META=27
+WARM=1000
+NB_RUN=40
+DATA_SIZE=85
 
 PLOT_ESTIMATE=true
 
@@ -26,7 +26,7 @@ function plot_metaTime {
 		echo '' > $med	
 
 		for j in $(seq 0 $i) ; do
-			T=$(taskset 3 ref_O3 ${WARM} ${NB_RUN} ${DATA_SIZE})
+			T=$(taskset -c 3 ref_O3 ${WARM} ${NB_RUN} ${DATA_SIZE})
 			echo $T >> $med
 		done
 	
@@ -51,7 +51,7 @@ function plot_NBRUN {
 		echo '' > $med	
 
 		for j in $(seq 0 $META) ; do
-			T=$(taskset 3 ref_O3 ${WARM} $i ${DATA_SIZE})
+			T=$(taskset -c 3 ref_O3 ${WARM} $i ${DATA_SIZE})
 			echo $T >> $med
 		done
 	
@@ -95,7 +95,7 @@ for i in $TODO ; do
 
 	echo '' > "meta_plot/"$i".tsv"
 	for j in $(seq 0 $META) ; do
-		T=$(taskset 3 $i ${WARM} ${NB_RUN} ${DATA_SIZE})
+		T=$(taskset -c 3 $i ${WARM} ${NB_RUN} ${DATA_SIZE})
 		echo $T >> $med
 		echo $j"	"$T >> "meta_plot/"$i".tsv"
 	done
@@ -105,6 +105,10 @@ for i in $TODO ; do
 	z=$(sort -n $med | sed -ne "$(($META/2+1))p")
 	
 	echo $i","$z >> res.csv
+
+	echo - SLEEP -
+
+	sleep 3
 	
 done
 
@@ -114,11 +118,15 @@ mv *.tsv warm_plot/
 echo  - PLOTING -
 
 if ${PLOT_ESTIMATE} ; then
+	sleep 3
 	plot_metaTime
+	sleep 3
 	plot_NBRUN
 fi
 
+
 plot_tsv warm_plot
+
 
 plot_tsv meta_plot
 

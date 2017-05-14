@@ -1,0 +1,304 @@
+Section 1: Function: kernel
+===========================
+
+These loops are supposed to be defined in: /home/pablo/Documents/IATIC_4/AOA/ProjetVegaMissil/kernel.c
+
+Section 1.1: Source loop ending at line 23
+==========================================
+
+Composition and unrolling
+-------------------------
+It is composed of the following loops [ID (first-last source line)]:
+ - 7 (22-23)
+ - 9 (23-23)
+and is unrolled by 8 (including vectorization).
+
+The following loops are considered as:
+ - unrolled and/or vectorized main: 9
+ - peel or tail: 7
+The analysis will be displayed for the unrolled and/or vectorized loops: 9
+
+Section 1.1.1: Binary (unrolled and/or vectorized) loop #9
+==========================================================
+
+The loop is defined in /home/pablo/Documents/IATIC_4/AOA/ProjetVegaMissil/kernel.c:23-23
+In the binary file, the address of the loop is: 400ed2
+
+16% of peak computational performance is used (2.67 out of 16.00 FLOP per cycle (GFLOPS @ 1GHz))
+
+Code clean check
+----------------
+Detected a slowdown caused by scalar integer instructions (typically used for address computation).
+By removing them, you can lower the cost of an iteration from 3.00 to 2.00 cycles (1.50x speedup).
+
+Vectorization status
+--------------------
+Your loop is vectorized (all SSE/AVX instructions are used in vector mode) but on 66% vector length.
+
+
+Vectorization
+-------------
+Your loop is processing FP elements but is NOT OR PARTIALLY VECTORIZED and could benefit from full vectorization.
+By fully vectorizing your loop, you can lower the cost of an iteration from 3.00 to 2.57 cycles (1.17x speedup).
+Since your execution units are vector units, only a fully vectorized loop can use their full power.
+
+Workaround(s):
+Use vector aligned instructions:
+ 1) align your arrays on 32 bytes boundaries
+ 2) inform your compiler that your arrays are vector aligned: use the __builtin_assume_aligned built-in.
+
+
+Bottlenecks
+-----------
+Performance is limited by instruction throughput (loading/decoding program instructions to execution core) (front-end is a bottleneck).
+
+By removing all these bottlenecks, you can lower the cost of an iteration from 3.00 to 2.00 cycles (1.50x speedup).
+
+
+Complex instructions
+--------------------
+Detected COMPLEX INSTRUCTIONS.
+
+These instructions generate more than one micro-operation and only one of them can be decoded during a cycle and the extra micro-operations increase pressure on execution units.
+ - VEXTRACTF128: 1 occurrences
+
+
+Vector unaligned load/store instructions
+----------------------------------------
+Detected 2 optimal vector unaligned load/store instructions.
+
+ - VEXTRACTF128: 1 occurrences
+ - VMOVUPS: 1 occurrences
+
+Workaround(s):
+Use vector aligned instructions:
+ 1) align your arrays on 32 bytes boundaries
+ 2) inform your compiler that your arrays are vector aligned: use the __builtin_assume_aligned built-in.
+
+
+Type of elements and instruction set
+------------------------------------
+1 AVX instructions are processing arithmetic or math operations on single precision FP elements in vector mode (eight at a time).
+
+
+Matching between your loop (in the source code) and the binary loop
+-------------------------------------------------------------------
+The binary loop is composed of 8 FP arithmetical operations:
+ - 8: multiply
+The binary loop is loading 36 bytes (9 single precision FP elements).
+The binary loop is storing 32 bytes (8 single precision FP elements).
+
+Arithmetic intensity
+--------------------
+Arithmetic intensity is 0.12 FP operations per loaded or stored byte.
+
+ASM code
+--------
+Instruction                               | Nb FU | P0   | P1   | P2   | P3   | P4 | P5   | Latency | Recip. throughput
+-----------------------------------------------------------------------------------------------------------------------
+VMULPS (%RAX,%R11,1),%YMM3,%YMM1          | 1     | 1    | 0    | 0.50 | 0.50 | 0  | 0    | 5       | 1
+ADD $0x1,%R13D                            | 1     | 0.33 | 0.33 | 0    | 0    | 0  | 0.33 | 1       | 0.33
+VMOVUPS %XMM1,(%R12,%R11,1)               | 1     | 0    | 0    | 0.50 | 0.50 | 1  | 0    | 3       | 1
+VEXTRACTF128 $0x1,%YMM1,0x10(%R12,%R11,1) | 2     | 0    | 0    | 0.50 | 0.50 | 1  | 0    | 2       | 1
+ADD $0x20,%R11                            | 1     | 0.33 | 0.33 | 0    | 0    | 0  | 0.33 | 1       | 0.33
+CMP -0x38(%RBP),%R13D                     | 1     | 0.33 | 0.33 | 0.50 | 0.50 | 0  | 0.33 | 1       | 0.50
+JB 400ed2 <kernel+0x1a2>                  | 1     | 0    | 0    | 0    | 0    | 0  | 1    | 0       | 1-2
+
+
+General properties
+------------------
+nb instructions    : 7
+nb uops            : 7
+loop length        : 34
+used x86 registers : 5
+used mmx registers : 0
+used xmm registers : 1
+used ymm registers : 2
+nb stack references: 1
+
+
+Front-end
+---------
+ASSUMED MACRO FUSION
+FIT IN UOP CACHE
+micro-operation queue: 3.00 cycles
+front end            : 3.00 cycles
+
+
+Back-end
+--------
+       | P0   | P1   | P2   | P3   | P4   | P5
+------------------------------------------------
+uops   | 1.33 | 1.33 | 2.00 | 2.00 | 2.00 | 1.33
+cycles | 1.33 | 1.33 | 2.00 | 2.00 | 2.00 | 1.33
+
+Cycles executing div or sqrt instructions: NA
+Longest recurrence chain latency (RecMII): 1.00
+
+
+Cycles summary
+--------------
+Front-end : 3.00
+Dispatch  : 2.00
+Data deps.: 1.00
+Overall L1: 3.00
+
+
+Vectorization ratios
+--------------------
+all    : 100%
+load   : 100%
+store  : 100%
+mul    : 100%
+add-sub: NA (no add-sub vectorizable/vectorized instructions)
+other  : NA (no other vectorizable/vectorized instructions)
+
+
+Vector efficiency ratios
+------------------------
+all    : 66%
+load   : 100%
+store  : 50%
+mul    : 100%
+add-sub: NA (no add-sub vectorizable/vectorized instructions)
+other  : NA (no other vectorizable/vectorized instructions)
+
+
+Cycles and memory resources usage
+---------------------------------
+Assuming all data fit into the L1 cache, each iteration of the binary loop takes 3.00 cycles. At this rate:
+ - 37% of peak load performance is reached (12.00 out of 32.00 bytes loaded per cycle (GB/s @ 1GHz))
+ - 66% of peak store performance is reached (10.67 out of 16.00 bytes stored per cycle (GB/s @ 1GHz))
+
+
+
+Section 1.2: Binary loops in the function named kernel
+======================================================
+
+Section 1.2.1: Binary loop #6
+=============================
+
+In the binary file, the address of the loop is: 400d70
+
+0% of peak computational performance is used (0.00 out of 2.00 FLOP per cycle (GFLOPS @ 1GHz))
+
+Vectorization status
+--------------------
+Your loop is not vectorized (all SSE/AVX instructions are used in scalar mode).
+Only 12% of vector length is used.
+
+
+Vectorization
+-------------
+Your loop is processing FP elements but is NOT OR PARTIALLY VECTORIZED and could benefit from full vectorization.
+By fully vectorizing your loop, you can lower the cost of an iteration from 2.00 to 0.25 cycles (8.00x speedup).
+Since your execution units are vector units, only a fully vectorized loop can use their full power.
+
+Workaround(s):
+ - Try another compiler or update/tune your current one:
+  * if not already done, recompile with O3 to enable the compiler vectorizer. In case of reduction loop, use Ofast instead of O3 or add ffast-math.
+ - Remove inter-iterations dependences from your loop and make it unit-stride:
+  * If your arrays have 2 or more dimensions, check whether elements are accessed contiguously and, otherwise, try to permute loops accordingly:
+C storage order is row-major: for(i) for(j) a[j][i] = b[j][i]; (slow, non stride 1) => for(i) for(j) a[i][j] = b[i][j]; (fast, stride 1)
+  * If your loop streams arrays of structures (AoS), try to use structures of arrays instead (SoA):
+for(i) a[i].x = b[i].x; (slow, non stride 1) => for(i) a.x[i] = b.x[i]; (fast, stride 1)
+
+
+Bottlenecks
+-----------
+Performance is limited by instruction throughput (loading/decoding program instructions to execution core) (front-end is a bottleneck).
+
+By removing all these bottlenecks, you can lower the cost of an iteration from 2.00 to 1.50 cycles (1.33x speedup).
+
+
+Type of elements and instruction set
+------------------------------------
+No instructions are processing arithmetic or math operations on FP elements. This loop is probably writing/copying data or processing integer elements.
+
+Matching between your loop (in the source code) and the binary loop
+-------------------------------------------------------------------
+The binary loop does not contain any FP arithmetical operations.
+The binary loop is loading 8 bytes.
+The binary loop is storing 4 bytes.
+
+ASM code
+--------
+Instruction               | Nb FU | P0   | P1   | P2   | P3   | P4 | P5   | Latency | Recip. throughput
+-------------------------------------------------------------------------------------------------------
+MOVSXD (%RDX,%RAX,4),%R9  | 1     | 0    | 0    | 0.50 | 0.50 | 0  | 0    | 1       | 0.50
+VMOVSS (%RSI,%R9,4),%XMM0 | 1     | 0    | 0    | 0.50 | 0.50 | 0  | 0    | 3       | 0.50
+VMOVSS %XMM0,(%R8,%RAX,4) | 1     | 0    | 0    | 0.50 | 0.50 | 1  | 0    | 3       | 1
+ADD $0x1,%RAX             | 1     | 0.33 | 0.33 | 0    | 0    | 0  | 0.33 | 1       | 0.33
+CMP %EAX,%EDI             | 1     | 0.33 | 0.33 | 0    | 0    | 0  | 0.33 | 1       | 0.33
+JG 400d70 <kernel+0x40>   | 1     | 0    | 0    | 0    | 0    | 0  | 1    | 0       | 1-2
+
+
+General properties
+------------------
+nb instructions    : 6
+nb uops            : 5
+loop length        : 24
+used x86 registers : 6
+used mmx registers : 0
+used xmm registers : 1
+used ymm registers : 0
+nb stack references: 0
+
+
+Front-end
+---------
+ASSUMED MACRO FUSION
+FIT IN UOP CACHE
+micro-operation queue: 2.00 cycles
+front end            : 2.00 cycles
+
+
+Back-end
+--------
+       | P0   | P1   | P2   | P3   | P4   | P5
+------------------------------------------------
+uops   | 0.67 | 0.33 | 1.50 | 1.50 | 1.00 | 1.00
+cycles | 0.67 | 0.33 | 1.50 | 1.50 | 1.00 | 1.00
+
+Cycles executing div or sqrt instructions: NA
+Longest recurrence chain latency (RecMII): 1.00
+
+
+Cycles summary
+--------------
+Front-end : 2.00
+Dispatch  : 1.50
+Data deps.: 1.00
+Overall L1: 2.00
+
+
+Vectorization ratios
+--------------------
+all    : 0%
+load   : 0%
+store  : 0%
+mul    : NA (no mul vectorizable/vectorized instructions)
+add-sub: NA (no add-sub vectorizable/vectorized instructions)
+other  : NA (no other vectorizable/vectorized instructions)
+
+
+Vector efficiency ratios
+------------------------
+all    : 12%
+load   : 12%
+store  : 12%
+mul    : NA (no mul vectorizable/vectorized instructions)
+add-sub: NA (no add-sub vectorizable/vectorized instructions)
+other  : NA (no other vectorizable/vectorized instructions)
+
+
+Cycles and memory resources usage
+---------------------------------
+Assuming all data fit into the L1 cache, each iteration of the binary loop takes 2.00 cycles. At this rate:
+ - 12% of peak load performance is reached (4.00 out of 32.00 bytes loaded per cycle (GB/s @ 1GHz))
+ - 12% of peak store performance is reached (2.00 out of 16.00 bytes stored per cycle (GB/s @ 1GHz))
+
+
+
+All innermost loops were analyzed.
+

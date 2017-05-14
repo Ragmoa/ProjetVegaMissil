@@ -27,8 +27,8 @@
 #define FILE_NAME warmup.tsv
 
 #define DFLT_D_SIZE 85
-#define DFLT_WARMUP 10000
-#define DFLT_NREP 20
+#define DFLT_WARMUP 200
+#define DFLT_NREP 40
 
 #define SEED 666
 

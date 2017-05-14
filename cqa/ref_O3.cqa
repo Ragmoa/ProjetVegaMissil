@@ -1,0 +1,160 @@
+Section 1: Function: kernel
+===========================
+
+These loops are supposed to be defined in: /home/pablo/Documents/IATIC_4/AOA/ProjetVegaMissil/kernel_ref.c
+
+Section 1.1: Source loop ending at line 9
+=========================================
+
+Composition and unrolling
+-------------------------
+It is composed of the loop 6
+and is not unrolled or unrolled with no peel/tail loop.
+
+Section 1.1.1: Binary loop #6
+=============================
+
+The loop is defined in /home/pablo/Documents/IATIC_4/AOA/ProjetVegaMissil/kernel_ref.c:8-9
+In the binary file, the address of the loop is: 400d60
+
+0% of peak computational performance is used (0.14 out of 16.00 FLOP per cycle (GFLOPS @ 1GHz))
+
+Vectorization status
+--------------------
+Your loop is not vectorized (all SSE/AVX instructions are used in scalar mode).
+Only 12% of vector length is used.
+
+
+Vectorization
+-------------
+Your loop is processing FP elements but is NOT OR PARTIALLY VECTORIZED and could benefit from full vectorization.
+By fully vectorizing your loop, you can lower the cost of an iteration from 7.00 to 1.75 cycles (4.00x speedup).
+Since your execution units are vector units, only a fully vectorized loop can use their full power.
+
+Workaround(s):
+ - Try another compiler or update/tune your current one:
+  * if not already done, recompile with O3 to enable the compiler vectorizer. In case of reduction loop, use Ofast instead of O3 or add ffast-math.
+ - Remove inter-iterations dependences from your loop and make it unit-stride:
+  * If your arrays have 2 or more dimensions, check whether elements are accessed contiguously and, otherwise, try to permute loops accordingly:
+C storage order is row-major: for(i) for(j) a[j][i] = b[j][i]; (slow, non stride 1) => for(i) for(j) a[i][j] = b[i][j]; (fast, stride 1)
+  * If your loop streams arrays of structures (AoS), try to use structures of arrays instead (SoA):
+for(i) a[i].x = b[i].x; (slow, non stride 1) => for(i) a.x[i] = b.x[i]; (fast, stride 1)
+
+
+Bottlenecks
+-----------
+Performance is limited by execution of divide and square root operations (the divide/square root unit is a bottleneck).
+
+By removing all these bottlenecks, you can lower the cost of an iteration from 7.00 to 2.00 cycles (3.50x speedup).
+
+Workaround(s):
+Reduce the number of division or square root instructions.
+If denominator is constant over iterations, use reciprocal (replace x/y with x*(1/y)). Check precision impact. This will be done by your compiler with ffast-math or Ofast.
+If you accept to loose numerical precision up to 2 ulp, you can speedup your code by passing the following options to your compiler: (ffast-math or Ofast) and mrecip.
+
+
+Type of elements and instruction set
+------------------------------------
+1 SSE or AVX instructions are processing arithmetic or math operations on single precision FP elements in scalar mode (one at a time).
+
+
+Matching between your loop (in the source code) and the binary loop
+-------------------------------------------------------------------
+The binary loop is composed of 1 FP arithmetical operations:
+ - 1: divide
+The binary loop is loading 8 bytes (2 single precision FP elements).
+The binary loop is storing 4 bytes (1 single precision FP elements).
+
+Arithmetic intensity
+--------------------
+Arithmetic intensity is 0.08 FP operations per loaded or stored byte.
+
+Unroll opportunity
+------------------
+Loop body is too small to efficiently use resources.
+Workaround(s):
+Unroll your loop if trip count is significantly higher than target unroll factor. This can be done manually. Or by recompiling with -funroll-loops and/or -floop-unroll-and-jam.
+
+ASM code
+--------
+Instruction              | Nb FU | P0   | P1   | P2   | P3   | P4 | P5   | Latency | Recip. throughput
+------------------------------------------------------------------------------------------------------
+MOVSS (%R10),%XMM0       | 1     | 0    | 0    | 0.50 | 0.50 | 0  | 0    | 3       | 0.50
+ADD $0x4,%RAX            | 1     | 0.33 | 0.33 | 0    | 0    | 0  | 0.33 | 1       | 0.33
+DIVSS -0x4(%RAX),%XMM0   | 1     | 1    | 0    | 0.50 | 0.50 | 0  | 0    | 10-13   | 7
+MOVSS %XMM0,(%R9)        | 1     | 0    | 0    | 0.50 | 0.50 | 1  | 0    | 3       | 1
+ADD %R11,%R9             | 1     | 0.33 | 0.33 | 0    | 0    | 0  | 0.33 | 1       | 0.33
+CMP %RAX,%R8             | 1     | 0.33 | 0.33 | 0    | 0    | 0  | 0.33 | 1       | 0.33
+JNE 400d60 <kernel+0x30> | 1     | 0    | 0    | 0    | 0    | 0  | 1    | 0       | 1-2
+
+
+General properties
+------------------
+nb instructions    : 7
+nb uops            : 6
+loop length        : 27
+used x86 registers : 5
+used mmx registers : 0
+used xmm registers : 1
+used ymm registers : 0
+nb stack references: 0
+
+
+Front-end
+---------
+ASSUMED MACRO FUSION
+FIT IN UOP CACHE
+micro-operation queue: 2.00 cycles
+front end            : 2.00 cycles
+
+
+Back-end
+--------
+       | P0   | P1   | P2   | P3   | P4   | P5
+------------------------------------------------
+uops   | 1.33 | 1.33 | 1.50 | 1.50 | 1.00 | 1.33
+cycles | 1.33 | 1.33 | 1.50 | 1.50 | 1.00 | 1.33
+
+Cycles executing div or sqrt instructions: 7.00
+Longest recurrence chain latency (RecMII): 1.00
+
+
+Cycles summary
+--------------
+Front-end : 2.00
+Dispatch  : 1.50
+DIV/SQRT  : 7.00
+Data deps.: 1.00
+Overall L1: 7.00
+
+
+Vectorization ratios
+--------------------
+all    : 0%
+load   : 0%
+store  : 0%
+mul    : NA (no mul vectorizable/vectorized instructions)
+add-sub: NA (no add-sub vectorizable/vectorized instructions)
+other  : 0%
+
+
+Vector efficiency ratios
+------------------------
+all    : 12%
+load   : 12%
+store  : 12%
+mul    : NA (no mul vectorizable/vectorized instructions)
+add-sub: NA (no add-sub vectorizable/vectorized instructions)
+other  : 12%
+
+
+Cycles and memory resources usage
+---------------------------------
+Assuming all data fit into the L1 cache, each iteration of the binary loop takes 7.00 cycles. At this rate:
+ - 3% of peak load performance is reached (1.14 out of 32.00 bytes loaded per cycle (GB/s @ 1GHz))
+ - 3% of peak store performance is reached (0.57 out of 16.00 bytes stored per cycle (GB/s @ 1GHz))
+
+
+
+All innermost loops were analyzed.
+
