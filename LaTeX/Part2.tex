@@ -28,6 +28,19 @@ Lors du calcul de la dernière ligne, l'indice indirect est donc lu pour la dern
 
 Speedup offert par cette optimisation:<A Calculer>
 
+\section*{Vectorisation}
+
+La vectorisation est la possiblité de faire plus rapidement le même type d'opération a la suite, grâce a l'utilisation d'instructions et de registres particuliers.Le code peut être écrit de manière vectorisée, via l'utiliation d'intrinsics, ou bien cette optimisation peut-être faite par le compilateur.
+
+Avant de supprimer l'accès indirect via la 1ère boucle, il était impossible pour les compilateurs de vectoriser le code.
+
+Maintenant nous avons un code vectorisé a:
+    \begin{itemize}
+    \item{-$66\%$ avec gcc}
+    \item{-$75\%$ avec icc}
+    \end{itemize}
+
+    Le code est vectorisé avec des instructions AVX, qui utilisent des registres de 256 bits. On peut donc stocker 8 floats/int32\_t par registre AVX.
 \section*{Tiling}
 Nous avons également envisagé de faire du tiling. Le tiling est une méthode consistant a découper le traitement de la matrice en un ensemble de sous-traitements sur des sous-ensembles de cette matrice..Ces matrices étant plus petites, elle peuvent être chargées dans des niveaux de cahche plus rapides, et donc accélérer le traitement.
 Malheursement, nous nous sommes rapidement rendus compte que cette méthode n'était pas adaptée a notre traitement.
@@ -35,6 +48,7 @@ En effet, le kernel charge intégralement la matrice, et rien ne garantit que le
 De plus, cela nuirait a notre optimisation sur la division, si par exemple on découpe notre matrice en 100 blocs de même taille, il nous faudra faire $10\times n $ divisions.
 
 Nous n'avons donc pas appliqué cette methode.
+
 
 
 
