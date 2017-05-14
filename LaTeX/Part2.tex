@@ -33,7 +33,7 @@ Ces données doivent être stockées entre le temps, la première idée serait d
 Pour ne pas consommer plus de mémoire, nous avons donc décidé de stocker ces valeurs sur la dernière ligne du tableau résultat.
 Lors du calcul de la dernière ligne, l'indice indirect est donc lu pour la dernière fois juste avant d'être remplacé par le résultat. 
 
-\subsection*{intrinsics et compilateur}
+\subsection*{Vectorisation compilateur}
 
 Avant de supprimer l'accès indirect via la 1ère boucle, il était impossible pour les compilateurs de vectoriser le code.
 
@@ -68,3 +68,12 @@ Ce flag s'écrit --march=native pour gcc et -xHost pour icc. Il indique au compi
 A chaque étape de l'optimisation, nous avons contrôlé la cohérence des résultats. Pour cela, nous avons utilisé vim, et gardé une valeur constante depuis le début du projet pour générer nos valeurs aléatoires. La plus grosse perte de précision que nous ayons trouvé est de l'ordre de $10^{-6}$
 
 
+\section*{Répartition des tâches}
+
+
+\section*{Conclusion}
+Ce projet nous a permis d'approfondir nos connaissances en matière d'optimisation de code, que ce soit par la découverte d'icc (gcc étant le seul compilateur c que nous ayons utilisé jusqu'a présent), mais aussi par celle d'outils permettant de meusurer la performance du code, comme maqao.
+
+Nous avons également mesuré la rigeur nécessaire pour créer des conditions de test stables, qui nous permettent d'obtenir des résultats valables, d'où la nécéssité d'une bonne répartition des tâches.
+
+Enfin, on a une page de Garde qui déchire.
