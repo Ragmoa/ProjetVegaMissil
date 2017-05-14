@@ -38,20 +38,20 @@ Dans une première partie, nous détaillerons les conditions de test; nous verro
 \subsection*{Hardware}
 
 \begin{itemize}
-    \item{- I7 3630QM (~Fin 2012) :}
-    \item{- 4 cores - 8 threads}
-    \item{- Freq : ~2.4Ghz (Idle 1.2Ghz - Turbo mode 3.40 Ghz )}
-    \item{- Cache L1: 32Ko}
-    \item{- Cache L2: 256Ko}
-    \item{- Cache L3: 6 144Ko}
-    \item{- 6 Go de RAM:  La capacité en RAM est répartie sur 2 unités: une de 4 et une de 2 Go, celà nous empêche d'utiliser du dual channel. De plus les unités sont plutôt bas de gamme.}
+    \item{I7 3630QM (~Fin 2012) :}
+    \item{4 cores - 8 threads}
+    \item{Freq : ~2.4Ghz (Idle 1.2Ghz - Turbo mode 3.40 Ghz )}
+    \item{Cache L1: 32Ko}
+    \item{Cache L2: 256Ko}
+    \item{Cache L3: 6 144Ko}
+    \item{6 Go de RAM:  La capacité en RAM est répartie sur 2 unités: une de 4 et une de 2 Go, celà nous empêche d'utiliser du dual channel. De plus les unités sont plutôt bas de gamme.}
 \end{itemize}
 
 \subsection*{Système}
 
 \begin{itemize}
-    \item{- gcc 6.3.1}
-    \item{- Arch x86\_64 ( noyaux Linux 4.10.6-1 Arch )}
+    \item{gcc 6.3.1}
+    \item{Arch x86\_64 ( noyaux Linux 4.10.6-1 Arch )}
 \end{itemize}
      Pour sortir un maximum de parasites de la mesure les C-states ont été déactivés, un thread cpu (le n°3) a été réservé grace à isolcpus et l'éxécution des binaires à tester fixé à ce dernier à l'aide de taskset. Deplus le systeme n'a été démaré qu'avec le strict minium (pas de serveur X, ni réseau, etc).
 

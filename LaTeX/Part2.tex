@@ -36,8 +36,8 @@ Avant de supprimer l'accès indirect via la 1ère boucle, il était impossible p
 
 Maintenant nous avons un code vectorisé a:
     \begin{itemize}
-    \item{-$66\%$ avec gcc}
-    \item{-$75\%$ avec icc}
+    \item{$66\%$ avec gcc}
+    \item{$75\%$ avec icc}
     \end{itemize}
 
     Le code est vectorisé avec des instructions AVX, qui utilisent des registres de 256 bits. On peut donc stocker 8 floats/int32\_t par registre AVX.
@@ -55,9 +55,10 @@ Nous n'avons donc pas appliqué cette methode.
 
 Nous avons également utilisé un flag de compilation supplémentaire, afin d'aller toujours plus vite.
 Ce flag s'écrit --march=native pour gcc et -xHost pour icc. Il indique au compilateur que le code est destiné exculsivement au processeur utilisé pour la compilation, et permet donc une optimisation plus poussée.\\
-
-Speedup pour gcc (Avec les autres opti):$\approx 8.97$\\
-Speedup pour icc (Avec les autres opti):$\approx 11.30$\\
+\begin{itemize}
+    \item{Speedup pour gcc (Avec les autres opti):$\approx 8.97$}
+    \item{Speedup pour icc (Avec les autres opti):$\approx 11.30$}\\
+\end{itemize}
 
 
 
