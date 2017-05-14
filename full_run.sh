@@ -7,6 +7,8 @@ WARM=''
 NB_RUN=''
 DATA_SIZE=''
 
+PLOT_ESTIMATE=true
+
 MAQAO_PATH="../maqao"
 
 function plot_tsv {
@@ -36,6 +38,33 @@ function plot_metaTime {
 	done
 
 	gnuplot -e "set terminal svg ; set output 'metamed.svg' ; plot 'metamed.tsv' with line"
+
+}
+
+function plot_NBRUN {
+
+	echo - REP ESTIMATE PLOT -
+	
+	for i in $(seq 4 50) ; do
+		med=$(mktemp)
+
+		echo '' > $med	
+
+		for j in $(seq 0 $META) ; do
+			T=$(taskset 3 ref_O3 ${WARM} $i ${DATA_SIZE})
+			echo $T >> $med
+		done
+	
+		echo - RESULT WRITING FOR $i -
+
+		z=$(sort -n $med | sed -ne "$(($i/2+1))p")
+	
+		echo $i"	"$z >> rep.tsv
+	done
+
+	gnuplot -e "set terminal svg ; set output 'rep.svg' ; plot 'rep.tsv' with line"
+
+
 
 }
 
@@ -84,7 +113,10 @@ mv *.tsv warm_plot/
 
 echo  - PLOTING -
 
-plot_metaTime
+if ${PLOT_ESTIMATE} ; then
+	plot_metaTime
+	plot_NBRUN
+fi
 
 plot_tsv warm_plot
 
