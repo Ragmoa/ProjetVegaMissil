@@ -21,7 +21,9 @@ Speedup offert par cette optimisation:$\approx 3.11$.
 
 La vectorisation est la possiblité de faire plus rapidement le même type d'opération a la suite, grâce a l'utilisation d'instructions et de registres particuliers.Le code peut être écrit de manière vectorisée, via l'utiliation d'intrinsics, ou bien cette optimisation peut-être faite par le compilateur.
 
-Malheusement cela est impossible a cause de l'accès indirect; Nous cherchons donc un moyen de le retier.
+Nous avons tenté dans un premier temps de vectoriser le code a la main, ce qui nous permettait d'atteindre $100\%$ de vectorisation.  Cepedant les résultats devenaient très peu consitants, c'est pourquoi nous avons décidé laisser le compilateur vectorsier le code a notre place.
+
+Malheusement cela etait impossible a cause de l'accès indirect; Nous avons donc cherché un moyen de le retier.
 \subsection*{L'accès indirect}
 Cette méthode est faisable grâce a notre inversion de boucles.
 
@@ -31,7 +33,8 @@ Ces données doivent être stockées entre le temps, la première idée serait d
 Pour ne pas consommer plus de mémoire, nous avons donc décidé de stocker ces valeurs sur la dernière ligne du tableau résultat.
 Lors du calcul de la dernière ligne, l'indice indirect est donc lu pour la dernière fois juste avant d'être remplacé par le résultat. 
 
-\subsection*{Vectorisé!}
+\subsection*{intrinsics et compilateur}
+
 Avant de supprimer l'accès indirect via la 1ère boucle, il était impossible pour les compilateurs de vectoriser le code.
 
 Maintenant nous avons un code vectorisé a:
