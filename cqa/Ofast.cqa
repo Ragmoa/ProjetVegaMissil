@@ -15,7 +15,7 @@ Section 1.1.1: Binary loop #6
 =============================
 
 The loop is defined in /home/pablo/Documents/IATIC_4/AOA/ProjetVegaMissil/kernel_ref.c:8-9
-In the binary file, the address of the loop is: 400d80
+In the binary file, the address of the loop is: 400d90
 
 0% of peak computational performance is used (0.14 out of 16.00 FLOP per cycle (GFLOPS @ 1GHz))
 
@@ -85,7 +85,7 @@ DIVSS -0x4(%RAX),%XMM0   | 1     | 1    | 0    | 0.50 | 0.50 | 0  | 0    | 10-13
 MOVSS %XMM0,(%R9)        | 1     | 0    | 0    | 0.50 | 0.50 | 1  | 0    | 3       | 1
 ADD %R11,%R9             | 1     | 0.33 | 0.33 | 0    | 0    | 0  | 0.33 | 1       | 0.33
 CMP %RAX,%R8             | 1     | 0.33 | 0.33 | 0    | 0    | 0  | 0.33 | 1       | 0.33
-JNE 400d80 <kernel+0x30> | 1     | 0    | 0    | 0    | 0    | 0  | 1    | 0       | 1-2
+JNE 400d90 <kernel+0x30> | 1     | 0    | 0    | 0    | 0    | 0  | 1    | 0       | 1-2
 
 
 General properties

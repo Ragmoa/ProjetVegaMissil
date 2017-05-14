@@ -95,7 +95,7 @@ int main(int argc, char** argv){
 
 	end=get_cycles();
 	
-	if(calc!=0) m= (end-start) / calc;
+	if(calc!=0) m= (end-start) / (float) calc;
 
 
 //OUTPUT & CLEANING

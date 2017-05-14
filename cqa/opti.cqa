@@ -22,7 +22,7 @@ Section 1.1.1: Binary (unrolled and/or vectorized) loop #9
 ==========================================================
 
 The loop is defined in /home/pablo/Documents/IATIC_4/AOA/ProjetVegaMissil/kernel.c:23-23
-In the binary file, the address of the loop is: 400e46
+In the binary file, the address of the loop is: 400e56
 
 12% of peak computational performance is used (2.00 out of 16.00 FLOP per cycle (GFLOPS @ 1GHz))
 
@@ -90,7 +90,7 @@ MULPS %XMM2,%XMM1          | 1     | 1    | 0    | 0    | 0    | 0  | 0    | 5  
 MOVUPS %XMM1,(%R12,%R10,1) | 1     | 0    | 0    | 0.50 | 0.50 | 1  | 0    | 3       | 1
 ADD $0x10,%R10             | 1     | 0.33 | 0.33 | 0    | 0    | 0  | 0.33 | 1       | 0.33
 CMP -0x28(%RSP),%R11D      | 1     | 0.33 | 0.33 | 0.50 | 0.50 | 0  | 0.33 | 1       | 0.50
-JB 400e46 <kernel+0x116>   | 1     | 0    | 0    | 0    | 0    | 0  | 1    | 0       | 1-2
+JB 400e56 <kernel+0x116>   | 1     | 0    | 0    | 0    | 0    | 0  | 1    | 0       | 1-2
 
 
 General properties
@@ -166,7 +166,7 @@ Section 1.2: Binary loops in the function named kernel
 Section 1.2.1: Binary loop #6
 =============================
 
-In the binary file, the address of the loop is: 400d60
+In the binary file, the address of the loop is: 400d70
 
 0% of peak computational performance is used (0.00 out of 2.00 FLOP per cycle (GFLOPS @ 1GHz))
 
@@ -218,7 +218,7 @@ MOVSS (%RSI,%R9,4),%XMM0 | 1     | 0    | 0    | 0.50 | 0.50 | 0  | 0    | 3    
 MOVSS %XMM0,(%R8,%RAX,4) | 1     | 0    | 0    | 0.50 | 0.50 | 1  | 0    | 3       | 1
 ADD $0x1,%RAX            | 1     | 0.33 | 0.33 | 0    | 0    | 0  | 0.33 | 1       | 0.33
 CMP %EAX,%EDI            | 1     | 0.33 | 0.33 | 0    | 0    | 0  | 0.33 | 1       | 0.33
-JG 400d60 <kernel+0x30>  | 1     | 0    | 0    | 0    | 0    | 0  | 1    | 0       | 1-2
+JG 400d70 <kernel+0x30>  | 1     | 0    | 0    | 0    | 0    | 0  | 1    | 0       | 1-2
 
 
 General properties
