@@ -17,21 +17,21 @@ On compare $3n^2$ et $3n+n^2$:\\
 Inverser les boucles est donc beaucoup plus rentable.
 Speedup offert par cette optimisation:<A Calculer>
 
-\section*{L'accès Indirect}
+\section*{Vectorisation}
 
-Une opération qui fait également perdre du temps au kernel est l'accés indirect sur le tableau a.
+La vectorisation est la possiblité de faire plus rapidement le même type d'opération a la suite, grâce a l'utilisation d'instructions et de registres particuliers.Le code peut être écrit de manière vectorisée, via l'utiliation d'intrinsics, ou bien cette optimisation peut-être faite par le compilateur.
+
+Malheusement cela est impossible a cause de l'accès indirect; Nous cherchons donc un moyen de le retier.
+\subsection*{L'accès indirect}
+Cette méthode est faisable grâce a notre inversion de boucles.
+
 Nous proposons d'ajouter une boucle au début du noyeau qui calculera les accés indrects avant que ceux-ci soient utilisés dans la bocule de calcul.
 Ces données doivent être stockées entre le temps, la première idée serait d'ajouter un tableau supplémentaire a cet effet, mais il faudrait alors recalculer toutes les tailles de tableau pour le L1, L2, L3 et RAM (n valeurs supplémentaires a stocker).\\
 
 Pour ne pas consommer plus de mémoire, nous avons donc décidé de stocker ces valeurs sur la dernière ligne du tableau résultat.
 Lors du calcul de la dernière ligne, l'indice indirect est donc lu pour la dernière fois juste avant d'être remplacé par le résultat. 
 
-Speedup offert par cette optimisation:<A Calculer>
-
-\section*{Vectorisation}
-
-La vectorisation est la possiblité de faire plus rapidement le même type d'opération a la suite, grâce a l'utilisation d'instructions et de registres particuliers.Le code peut être écrit de manière vectorisée, via l'utiliation d'intrinsics, ou bien cette optimisation peut-être faite par le compilateur.
-
+\subsection*{Vectorisé!}
 Avant de supprimer l'accès indirect via la 1ère boucle, il était impossible pour les compilateurs de vectoriser le code.
 
 Maintenant nous avons un code vectorisé a:
@@ -41,6 +41,8 @@ Maintenant nous avons un code vectorisé a:
     \end{itemize}
 
     Le code est vectorisé avec des instructions AVX, qui utilisent des registres de 256 bits. On peut donc stocker 8 floats/int32\_t par registre AVX.
+    Il n'est pas vraiment possible de donner le speedup individuel de cette optimisation, car elle dépend de l'inversion des boucles.
+
 \section*{Tiling}
 Nous avons également envisagé de faire du tiling. Le tiling est une méthode consistant a découper le traitement de la matrice en un ensemble de sous-traitements sur des sous-ensembles de cette matrice..Ces matrices étant plus petites, elle peuvent être chargées dans des niveaux de cahche plus rapides, et donc accélérer le traitement.
 Malheursement, nous nous sommes rapidement rendus compte que cette méthode n'était pas adaptée a notre traitement.
