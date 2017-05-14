@@ -15,7 +15,7 @@ On compare $3n^2$ et $3n+n^2$:\\
     \caption{Comparaison des temps de calcul des deux méthodes}
 \end{figure}
 Inverser les boucles est donc beaucoup plus rentable.
-Speedup offert par cette optimisation:<A Calculer>
+Speedup offert par cette optimisation:$\approx 3.11$.
 
 \section*{Vectorisation}
 
@@ -42,7 +42,7 @@ Maintenant nous avons un code vectorisé a:
 
     Le code est vectorisé avec des instructions AVX, qui utilisent des registres de 256 bits. On peut donc stocker 8 floats/int32\_t par registre AVX.
     Il n'est pas vraiment possible de donner le speedup individuel de cette optimisation, car elle dépend de l'inversion des boucles.
-
+Speedup avec ces deux optimisations :$\approx 7.11$
 \section*{Tiling}
 Nous avons également envisagé de faire du tiling. Le tiling est une méthode consistant a découper le traitement de la matrice en un ensemble de sous-traitements sur des sous-ensembles de cette matrice..Ces matrices étant plus petites, elle peuvent être chargées dans des niveaux de cahche plus rapides, et donc accélérer le traitement.
 Malheursement, nous nous sommes rapidement rendus compte que cette méthode n'était pas adaptée a notre traitement.
@@ -51,8 +51,13 @@ De plus, cela nuirait a notre optimisation sur la division, si par exemple on d�
 
 Nous n'avons donc pas appliqué cette methode.
 
+\section*{Optimisations Compilateur}
 
+Nous avons également utilisé un flag de compilation supplémentaire, afin d'aller toujours plus vite.
+Ce flag s'écrit --march=native pour gcc et -xHost pour icc. Il indique au compilateur que le code est destiné exculsivement au processeur utilisé pour la compilation, et permet donc une optimisation plus poussée.\\
 
+Speedup pour gcc (Avec les autres opti):$\approx 8.97$\\
+Speedup pour icc (Avec les autres opti):$\approx 11.30$\\
 
 
 
